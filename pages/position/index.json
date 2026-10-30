@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "pnl-text": "../../components/pnl-text/index",
+    "ui-empty": "../../components/ui-empty/index"
+  },
+  "navigationBarTitleText": "持仓"
+}

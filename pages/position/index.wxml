@@ -1,0 +1,50 @@
+<view class="page-pad">
+  <view class="hero">
+    <text class="hero-label">总市值（元）</text>
+    <text class="hero-value num">{{totalValue}}</text>
+    <view class="hero-row">
+      <view class="hero-item">
+        <text class="hero-k">持仓成本</text>
+        <text class="hero-v num">{{totalCost}}</text>
+      </view>
+      <view class="hero-item">
+        <text class="hero-k">浮动盈亏</text>
+        <view class="hero-v">
+          <pnl-text cents="{{totalPnl}}" strong />
+          <text class="hero-pct num">{{pnlPercent}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">持仓明细</text>
+    <text class="mini muted">{{list.length}} 个标的</text>
+  </view>
+
+  <ui-empty
+    wx:if="{{ready && list.length === 0}}"
+    title="还没有持仓"
+    desc="记下第一笔买入，这里会自动算出成本与浮动盈亏"
+    action="记一笔"
+    bind:action="goAdd"
+  />
+
+  <view wx:for="{{list}}" wx:key="instrumentId" class="pos-row" bindtap="openInstrument" data-code="{{item.code}}">
+    <view class="pos-left">
+      <text class="pos-name">{{item.name}}</text>
+      <text class="pos-code">{{item.code}} · {{item.typeText}}</text>
+    </view>
+    <view class="pos-mid">
+      <text class="pos-qty num">{{item.qtyText}}</text>
+      <text class="pos-cost">成本 {{item.costText}}</text>
+    </view>
+    <view class="pos-right">
+      <pnl-text cents="{{item.pnl}}" strong />
+      <text class="pos-pct num">{{item.pnlPercent}}</text>
+    </view>
+  </view>
+
+  <view class="fab" bindtap="goAdd">＋ 记一笔</view>
+  <view style="height: 160rpx"></view>
+</view>

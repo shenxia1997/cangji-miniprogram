@@ -1,0 +1,19 @@
+<view class="page-pad">
+  <view wx:for="{{accounts}}" wx:key="id" class="acc-row">
+    <view class="acc-left">
+      <text class="acc-name">{{item.name}}</text>
+      <text class="acc-sub">佣金 万{{item.rateText}} · 最低 {{item.minText}} 元 · 印花税 {{item.stampText}}‰</text>
+    </view>
+    <text class="acc-del" bindtap="remove" data-id="{{item.id}}">删除</text>
+  </view>
+
+  <view class="add-box">
+    <input class="add-input" value="{{newName}}" placeholder="新账户名称，如：华泰证券" bindinput="onInput" />
+    <view class="btn-primary" bindtap="add">添加账户</view>
+  </view>
+
+  <view class="tip">
+    <text class="tip-title">关于费率模板</text>
+    <text class="tip-body">费用未手动填写时，按当前账户的费率模板预估。印花税仅在卖出时计算。</text>
+  </view>
+</view>

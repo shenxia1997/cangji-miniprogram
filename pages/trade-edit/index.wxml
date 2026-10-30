@@ -1,0 +1,102 @@
+<view class="page-pad">
+  <view class="dir-switch">
+    <view class="dir {{type === 'buy' ? 'on buy' : ''}}" bindtap="switchType" data-type="buy">买入</view>
+    <view class="dir {{type === 'sell' ? 'on sell' : ''}}" bindtap="switchType" data-type="sell">卖出</view>
+  </view>
+
+  <view class="card">
+    <view class="row line">
+      <text class="label">标的代码</text>
+      <input class="input num" type="number" maxlength="6" value="{{code}}" placeholder="6 位代码" bindinput="onCodeInput" bindblur="onCodeBlur" />
+    </view>
+    <view class="row line">
+      <text class="label">标的名称</text>
+      <input class="input" value="{{name}}" placeholder="首次录入需填写" bindinput="onNameInput" />
+    </view>
+    <view class="row line">
+      <text class="label">账户</text>
+      <picker range="{{accountNames}}" value="{{accountIndex}}" bindchange="onAccountChange">
+        <view class="picker-value">{{accountNames[accountIndex]}} ›</view>
+      </picker>
+    </view>
+    <view class="row line">
+      <text class="label">成交日期</text>
+      <picker mode="date" value="{{dateText}}" bindchange="onDateChange">
+        <view class="picker-value">{{dateText}} ›</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="price-block">
+      <text class="price-label">成交价格</text>
+      <view class="price-input">
+        <money-input mode="price" value="{{priceLi}}" bind:change="onPriceChange" placeholder="0.000" />
+      </view>
+      <text class="price-unit">元</text>
+    </view>
+
+    <view class="row line">
+      <text class="label">成交数量</text>
+      <view class="qty-wrap">
+        <input class="input num right" type="digit" value="{{qtyText}}" placeholder="0" bindinput="onQtyInput" />
+        <text class="unit">股</text>
+      </view>
+    </view>
+    <view wx:if="{{type === 'sell'}}" class="row line">
+      <text class="label">可卖数量</text>
+      <text class="muted num">{{availableText}} 股</text>
+    </view>
+
+    <view class="row">
+      <text class="label">费用</text>
+      <view class="qty-wrap">
+        <money-input value="{{feeCents}}" bind:change="onFeeChange" placeholder="0.00" />
+        <text class="unit">元</text>
+      </view>
+    </view>
+    <view class="hint">未填写时按费率模板预估</view>
+  </view>
+
+  <view wx:if="{{type === 'sell'}}" class="card">
+    <view class="row">
+      <view class="method-left">
+        <text class="label">批次归属</text>
+        <text class="hint-inline">{{methodText}}</text>
+      </view>
+      <view class="method-actions">
+        <view class="chip {{method === 'auto_weighted' ? 'on' : ''}}" bindtap="setMethod" data-m="auto_weighted">自动</view>
+        <view class="chip {{method === 'specified' ? 'on' : ''}}" bindtap="setMethod" data-m="specified">指定批次</view>
+      </view>
+    </view>
+    <view wx:if="{{method === 'specified'}}" class="spec-row" bindtap="openLotPicker">
+      <text class="spec-text">{{allocText}}</text>
+      <text class="spec-link">选择 ›</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row">
+      <text class="label">备注</text>
+      <input class="input right" value="{{note}}" placeholder="选填，如买入理由" bindinput="onNoteInput" />
+    </view>
+  </view>
+
+  <view class="save-bar">
+    <view class="preview" wx:if="{{type === 'sell' && previewPnl !== null}}">
+      <text class="mini muted">本笔预演盈亏</text>
+      <pnl-text cents="{{previewPnl}}" strong />
+    </view>
+    <view class="btn-primary {{canSave ? '' : 'disabled'}}" bindtap="save">保存</view>
+  </view>
+
+  <lot-picker
+    visible="{{lotVisible}}"
+    lots="{{lots}}"
+    sellQty="{{qtyMilli}}"
+    sellPriceLi="{{priceLi}}"
+    sellFee="{{feeCents}}"
+    bind:confirm="onLotConfirm"
+    bind:close="onLotClose"
+  />
+</view>

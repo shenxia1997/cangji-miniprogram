@@ -1,0 +1,8 @@
+.pnl {
+  font-family: 'DIN Alternate', 'SF Mono', 'Menlo', monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+.pnl.up { color: var(--color-up); }
+.pnl.down { color: var(--color-down); }
+.pnl.strong { font-weight: 600; }

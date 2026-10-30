@@ -1,0 +1,47 @@
+<view class="mask" wx:if="{{visible}}" bindtap="onClose">
+  <view class="panel" catchtap="noop">
+    <view class="panel-head">
+      <text class="panel-title">选择卖出批次</text>
+      <text class="panel-sub">可卖 {{sellText}} 股 · 共 {{lots.length}} 个批次</text>
+    </view>
+
+    <scroll-view scroll-y class="panel-body">
+      <view
+        wx:for="{{rows}}"
+        wx:key="lotId"
+        class="lot {{item.picked > 0 ? 'on' : ''}}"
+      >
+        <view class="lot-main" bindtap="onToggle" data-index="{{index}}">
+          <view class="chk {{item.picked > 0 ? 'on' : ''}}">{{item.picked > 0 ? '✓' : ''}}</view>
+          <view class="lot-info">
+            <view class="lot-title">
+              <text>{{item.dateText}}</text>
+              <text class="tag">买入 {{item.priceText}}</text>
+            </view>
+            <view class="lot-sub">剩余 {{item.remainText}} 股 · 浮盈 {{item.pnlText}}</view>
+          </view>
+        </view>
+        <view class="stepper">
+          <view class="step-btn" bindtap="onDec" data-index="{{index}}">−</view>
+          <view class="step-val">{{item.pickedText}}</view>
+          <view class="step-btn" bindtap="onInc" data-index="{{index}}">+</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="panel-foot">
+      <view class="foot-row">
+        <text class="mini muted">待分配 {{remainText}} 股</text>
+        <text class="fill" bindtap="onFillFifo">按先进先出填充</text>
+      </view>
+      <view class="preview">
+        <text class="mini muted">本笔预演盈亏</text>
+        <pnl-text cents="{{previewPnl}}" strong />
+      </view>
+      <view class="actions">
+        <view class="btn-ghost" bindtap="onClose">取消</view>
+        <view class="btn-primary {{canConfirm ? '' : 'disabled'}}" bindtap="onConfirm">确认分配</view>
+      </view>
+    </view>
+  </view>
+</view>

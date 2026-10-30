@@ -1,0 +1,79 @@
+.dir-switch {
+  display: flex;
+  background: #E9EDF4;
+  border-radius: 20rpx;
+  padding: 6rpx;
+  margin: 24rpx 0;
+}
+.dir {
+  flex: 1;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: var(--color-text-2);
+}
+.dir.on { background: #fff; font-weight: 600; }
+.dir.on.buy { color: var(--color-down); }
+.dir.on.sell { color: var(--color-up); }
+
+.line { padding: 22rpx 0; border-bottom: 1rpx solid var(--color-line); }
+.label { font-size: 28rpx; color: var(--color-text-2); }
+.input {
+  flex: 1;
+  text-align: right;
+  font-size: 28rpx;
+  color: var(--color-text);
+}
+.input.right { text-align: right; }
+.picker-value { font-size: 28rpx; color: var(--color-text); }
+
+.price-block {
+  display: flex;
+  align-items: baseline;
+  padding: 16rpx 0 28rpx;
+  border-bottom: 1rpx solid var(--color-line);
+}
+.price-label { font-size: 28rpx; color: var(--color-text-2); width: 160rpx; }
+.price-input { flex: 1; }
+.price-input .mi-input { font-size: 60rpx; font-weight: 600; }
+.price-unit { font-size: 26rpx; color: var(--color-muted); margin-left: 8rpx; }
+
+.qty-wrap { display: flex; align-items: baseline; flex: 1; justify-content: flex-end; }
+.unit { margin-left: 8rpx; font-size: 24rpx; color: var(--color-muted); }
+.hint { margin-top: 12rpx; font-size: 22rpx; color: var(--color-muted); }
+.hint-inline { margin-left: 12rpx; font-size: 22rpx; color: var(--color-muted); }
+
+.method-left { display: flex; align-items: center; }
+.method-actions { display: flex; gap: 12rpx; }
+.chip {
+  padding: 10rpx 24rpx;
+  border-radius: 28rpx;
+  background: #F1F4F9;
+  font-size: 24rpx;
+  color: var(--color-text-2);
+}
+.chip.on { background: #E8EEFF; color: var(--color-primary); font-weight: 600; }
+
+.spec-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 20rpx;
+  padding: 20rpx;
+  border: 1rpx dashed #C8D2E4;
+  border-radius: 16rpx;
+}
+.spec-text { font-size: 26rpx; color: var(--color-text); }
+.spec-link { font-size: 26rpx; color: var(--color-primary); }
+
+.save-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: 20rpx 32rpx 40rpx;
+  background: #fff;
+  box-shadow: 0 -8rpx 24rpx rgba(16, 24, 40, 0.06);
+}
+.preview {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16rpx;
+}

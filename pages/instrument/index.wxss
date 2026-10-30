@@ -1,0 +1,31 @@
+.head { padding-bottom: 24rpx; }
+.name { font-size: 36rpx; font-weight: 600; }
+.code { display: block; margin-top: 8rpx; font-size: 24rpx; color: var(--color-muted); }
+.right { text-align: right; }
+.pct { display: block; margin-top: 6rpx; font-size: 22rpx; color: var(--color-muted); }
+
+.grid { display: flex; margin-top: 28rpx; }
+.g-item { flex: 1; }
+.g-k { font-size: 22rpx; color: var(--color-muted); }
+.g-v { display: block; margin-top: 8rpx; font-size: 28rpx; }
+
+.line { padding: 20rpx 0; }
+.k { font-size: 28rpx; color: var(--color-text-2); }
+.price-edit { display: flex; align-items: baseline; }
+.price-edit .mi-input { font-size: 32rpx; text-align: right; }
+.unit { margin-left: 8rpx; font-size: 24rpx; color: var(--color-muted); }
+.hint { display: block; margin-top: 8rpx; font-size: 22rpx; color: var(--color-muted); }
+
+.section-title { margin: 24rpx 0 16rpx; font-size: 30rpx; font-weight: 600; }
+.lot-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fff; border-radius: 20rpx; padding: 24rpx; margin-bottom: 12rpx;
+}
+.lot-date { font-size: 28rpx; font-weight: 600; }
+.lot-sub { display: block; margin-top: 8rpx; font-size: 22rpx; color: var(--color-muted); }
+.lot-right { text-align: right; }
+.lot-remain { display: block; font-size: 28rpx; }
+.lot-status { display: block; margin-top: 6rpx; font-size: 22rpx; }
+.lot-status.holding { color: var(--color-muted); }
+.lot-status.partial { color: #B26A00; }
+.lot-status.closed { color: #98A2B3; }

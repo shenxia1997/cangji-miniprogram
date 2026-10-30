@@ -1,0 +1,25 @@
+{
+  "name": "cangji-miniprogram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "仓记 - 基金股票交易记账微信小程序",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:prop": "jest tests/domain/invariants.prop.test.ts",
+    "test:golden": "jest tests/domain/golden.test.ts",
+    "bench": "ts-node tests/perf/bench.ts",
+    "check": "npm run typecheck && npm run test"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "fast-check": "^3.17.1",
+    "jest": "^29.7.0",
+    "miniprogram-api-typings": "^3.12.3",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}

@@ -1,0 +1,40 @@
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 24rpx 0 20rpx;
+}
+.pills { display: flex; gap: 12rpx; }
+.pill {
+  padding: 12rpx 28rpx;
+  border-radius: 32rpx;
+  background: #fff;
+  font-size: 24rpx;
+  color: var(--color-text-2);
+}
+.pill.on { background: var(--color-primary); color: #fff; }
+.add-btn { font-size: 24rpx; color: var(--color-primary); }
+
+.group { margin-bottom: 20rpx; }
+.group-head { padding: 12rpx 8rpx; }
+.group-label { font-size: 24rpx; color: var(--color-muted); }
+
+.tx {
+  display: flex; align-items: center;
+  background: #fff; border-radius: 20rpx;
+  padding: 24rpx; margin-bottom: 12rpx;
+}
+.tx-dir {
+  width: 56rpx; height: 56rpx; border-radius: 14rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24rpx; font-weight: 600;
+  margin-right: 20rpx;
+}
+.tx-dir.buy { background: #E8F6EE; color: #0F7B43; }
+.tx-dir.sell { background: #FDECEA; color: #C62828; }
+.tx-main { flex: 1; min-width: 0; }
+.tx-title { display: flex; align-items: center; }
+.tx-name { font-size: 30rpx; font-weight: 600; }
+.tx-title .tag { margin-left: 12rpx; }
+.tx-sub { display: block; margin-top: 8rpx; font-size: 22rpx; color: var(--color-muted); }
+.tx-right { text-align: right; }
+.tx-amount { display: block; font-size: 30rpx; }
+.tx-pnl { display: block; margin-top: 6rpx; font-size: 22rpx; color: var(--color-muted); }

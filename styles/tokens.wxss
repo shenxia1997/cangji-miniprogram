@@ -1,0 +1,27 @@
+/* 设计令牌 —— 色值与 UI 设计稿一致，页面样式只引用变量 */
+page {
+  --color-primary: #2F5BEA;
+  --color-up: #E4453A;
+  --color-down: #12A45B;
+  --color-text: #101828;
+  --color-text-2: #5A6474;
+  --color-muted: #98A2B3;
+  --color-line: #EDF0F4;
+  --color-bg: #F5F7FA;
+  --color-card: #FFFFFF;
+  --color-tag: #F2F0FD;
+  --color-tag-text: #4B3FA8;
+
+  --fs-display: 64rpx;
+  --fs-h1: 44rpx;
+  --fs-h2: 36rpx;
+  --fs-title: 32rpx;
+  --fs-body: 28rpx;
+  --fs-small: 24rpx;
+  --fs-mini: 20rpx;
+
+  --radius-card: 24rpx;
+  --radius-btn: 22rpx;
+  --space-page: 32rpx;
+  --space-card: 28rpx;
+}

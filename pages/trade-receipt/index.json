@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "pnl-text": "../../components/pnl-text/index"
+  },
+  "navigationBarTitleText": "保存成功"
+}

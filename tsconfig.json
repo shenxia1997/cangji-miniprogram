@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "lib": ["ES2019", "DOM"],
+    "types": ["jest", "node", "miniprogram-api-typings"],
+    "baseUrl": ".",
+    "paths": {
+      "domain/*": ["domain/*"],
+      "services/*": ["services/*"],
+      "store/*": ["store/*"]
+    }
+  },
+  "include": ["domain/**/*.ts", "services/**/*.ts", "store/**/*.ts", "tests/**/*.ts", "typings/**/*.d.ts"],
+  "exclude": ["node_modules", "miniprogram_npm", "cloudfunctions"]
+}

@@ -1,0 +1,48 @@
+<view class="page-pad">
+  <view class="pills">
+    <view
+      wx:for="{{ranges}}"
+      wx:key="key"
+      class="pill {{range === item.key ? 'on' : ''}}"
+      bindtap="switchRange"
+      data-key="{{item.key}}"
+    >{{item.label}}</view>
+  </view>
+
+  <view class="summary">
+    <text class="summary-label">已实现盈亏（元）</text>
+    <view class="summary-value">
+      <pnl-text cents="{{realized}}" strong />
+    </view>
+    <view class="summary-grid">
+      <view class="sg-item">
+        <text class="sg-k">买入额</text>
+        <text class="sg-v num">{{buyText}}</text>
+      </view>
+      <view class="sg-item">
+        <text class="sg-k">卖出额</text>
+        <text class="sg-v num">{{sellText}}</text>
+      </view>
+      <view class="sg-item">
+        <text class="sg-k">费用</text>
+        <text class="sg-v num">{{feeText}}</text>
+      </view>
+      <view class="sg-item">
+        <text class="sg-k">笔数</text>
+        <text class="sg-v num">{{count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">标的排行（按已实现盈亏）</view>
+    <view wx:for="{{ranking}}" wx:key="instrumentId" class="rank-row">
+      <text class="rank-name">{{item.name}}</text>
+      <view class="rank-bar">
+        <view class="rank-fill {{item.pnl >= 0 ? 'up' : 'down'}}" style="width: {{item.width}}%"></view>
+      </view>
+      <text class="rank-val num {{item.pnl >= 0 ? 'up' : 'down'}}">{{item.pnlText}}</text>
+    </view>
+    <view wx:if="{{ranking.length === 0}}" class="mini muted">暂无已实现盈亏</view>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "ui-empty": "../../components/ui-empty/index"
+  },
+  "navigationBarTitleText": "记录"
+}

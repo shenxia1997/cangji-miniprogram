@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "pnl-text": "../pnl-text/index"
+  }
+}

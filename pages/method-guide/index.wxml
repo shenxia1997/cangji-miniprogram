@@ -1,0 +1,47 @@
+<view class="page-pad">
+  <view class="intro">
+    <text class="intro-title">为什么同一笔卖出，会有两个盈亏数字？</text>
+    <text class="intro-body">因为"卖的是哪一批"可以由你指定。下面用同一组买入、同一笔卖出，展示两种口径的差别。</text>
+  </view>
+
+  <view class="card">
+    <view class="card-title">示例：三批买入</view>
+    <view wx:for="{{buys}}" wx:key="label" class="row line">
+      <text class="k">{{item.label}}</text>
+      <text class="v num">{{item.text}}</text>
+    </view>
+    <text class="hint">合计 {{totalQty}} 股，成本 {{totalCost}} 元，加权均价 {{avgPrice}} 元</text>
+  </view>
+
+  <view class="compare">
+    <view class="cmp-card">
+      <text class="cmp-title">加权平均</text>
+      <text class="cmp-desc">未指定批次时使用</text>
+      <pnl-text cents="{{weightedPnl}}" strong />
+      <text class="cmp-sub">剩余均价 {{weightedUnit}} 元</text>
+    </view>
+    <view class="cmp-card highlight">
+      <text class="cmp-title">指定批次</text>
+      <text class="cmp-desc">做T 时手动选择</text>
+      <pnl-text cents="{{specifiedPnl}}" strong />
+      <text class="cmp-sub">剩余均价 {{specifiedUnit}} 元</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">差异从哪里来</view>
+    <text class="body">指定批次时，本笔结转用的是「你选中的那一批」的买入成本，而不是全仓均价。卖掉的如果是低成本批次，本笔盈亏会更高；同时剩余持仓的加权成本会被抬高。</text>
+    <text class="body">这属于正常结果，但会与券商展示的成本不一致 —— 券商多按加权或先进先出计算。</text>
+  </view>
+
+  <view class="card">
+    <view class="card-title">本产品的口径约定</view>
+    <view class="body">1. 成本基数已包含买入费用，因此已实现盈亏 = 卖出额 − 结转成本 − 卖出费用，不再单独扣一次买入费。</view>
+    <view class="body">2. 除法只出现在结转一处，剩余成本用减法反求，保证「结转 + 剩余 = 原总额」，一分钱都不会漂。</view>
+    <view class="body">3. 切换口径会全量重算，不保留两套并行结果。</view>
+  </view>
+
+  <view class="foot">
+    <view class="btn-ghost" bindtap="goBack">我知道了</view>
+  </view>
+</view>

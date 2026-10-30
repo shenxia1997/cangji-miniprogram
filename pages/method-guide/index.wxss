@@ -1,0 +1,26 @@
+.intro { padding: 32rpx 8rpx 24rpx; }
+.intro-title { font-size: 34rpx; font-weight: 600; line-height: 1.5; }
+.intro-body { display: block; margin-top: 12rpx; font-size: 26rpx; color: var(--color-text-2); line-height: 1.7; }
+
+.card-title { font-size: 28rpx; font-weight: 600; margin-bottom: 16rpx; }
+.line { padding: 16rpx 0; border-bottom: 1rpx solid var(--color-line); }
+.line:last-of-type { border-bottom: none; }
+.k { font-size: 26rpx; color: var(--color-text-2); }
+.v { font-size: 26rpx; }
+.hint { display: block; margin-top: 12rpx; font-size: 22rpx; color: var(--color-muted); }
+.body { font-size: 26rpx; color: var(--color-text-2); line-height: 1.8; margin-bottom: 12rpx; }
+
+.compare { display: flex; gap: 20rpx; margin-bottom: 24rpx; }
+.cmp-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+}
+.cmp-card.highlight { background: #F7F9FF; border: 1rpx solid #D6E0FA; }
+.cmp-title { font-size: 28rpx; font-weight: 600; }
+.cmp-desc { display: block; margin-top: 6rpx; font-size: 22rpx; color: var(--color-muted); }
+.cmp-card .pnl { display: block; margin-top: 16rpx; font-size: 40rpx; }
+.cmp-sub { display: block; margin-top: 8rpx; font-size: 22rpx; color: var(--color-muted); }
+
+.foot { padding: 16rpx 0 60rpx; }

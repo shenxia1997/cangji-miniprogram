@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/position/index",
+    "pages/records/index",
+    "pages/stats/index",
+    "pages/mine/index",
+    "pages/trade-edit/index",
+    "pages/trade-receipt/index",
+    "pages/instrument/index",
+    "pages/method-guide/index",
+    "pages/account/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "仓记",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F7FA"
+  },
+  "tabBar": {
+    "color": "#98A2B3",
+    "selectedColor": "#2F5BEA",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/position/index", "text": "持仓" },
+      { "pagePath": "pages/records/index", "text": "记录" },
+      { "pagePath": "pages/stats/index", "text": "统计" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,1 @@
+<text class="pnl {{cls}} {{strong ? 'strong' : ''}}">{{text}}</text>

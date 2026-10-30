@@ -1,0 +1,12 @@
+<view class="mi">
+  <input
+    class="mi-input {{align === 'right' ? 'right' : ''}}"
+    type="digit"
+    value="{{display}}"
+    placeholder="{{placeholder}}"
+    placeholder-class="mi-ph"
+    bindinput="onInput"
+    bindblur="onBlur"
+  />
+  <text wx:if="{{suffix}}" class="mi-suffix">{{suffix}}</text>
+</view>

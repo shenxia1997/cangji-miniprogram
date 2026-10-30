@@ -1,0 +1,35 @@
+.user-card {
+  display: flex; align-items: center;
+  background: #fff; border-radius: 24rpx;
+  padding: 32rpx; margin: 24rpx 0;
+}
+.avatar {
+  width: 96rpx; height: 96rpx; border-radius: 50%;
+  background: var(--color-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36rpx; font-weight: 600;
+  margin-right: 24rpx;
+}
+.user-name { display: block; font-size: 32rpx; font-weight: 600; }
+.user-sub { display: block; margin-top: 8rpx; font-size: 24rpx; color: var(--color-muted); }
+
+.menu { background: #fff; border-radius: 24rpx; overflow: hidden; }
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 30rpx 32rpx;
+  border-bottom: 1rpx solid var(--color-line);
+  font-size: 30rpx;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-left { display: flex; align-items: center; }
+.menu-left .tag { margin-left: 12rpx; }
+.menu-value { font-size: 26rpx; color: var(--color-muted); }
+.arrow { color: #C4CBD8; font-size: 32rpx; }
+
+.disclaimer { margin-top: 32rpx; padding: 24rpx 8rpx; }
+.disc-title { font-size: 24rpx; color: var(--color-text-2); font-weight: 600; }
+.disc-body {
+  display: block; margin-top: 10rpx;
+  font-size: 22rpx; color: var(--color-muted); line-height: 1.7;
+}
+.version { text-align: center; margin-top: 40rpx; font-size: 22rpx; color: #C4CBD8; }

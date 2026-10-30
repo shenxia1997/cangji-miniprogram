@@ -1,0 +1,33 @@
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0 40rpx;
+}
+.result-icon {
+  width: 96rpx; height: 96rpx; border-radius: 50%;
+  background: #E8F6EE; color: #0F7B43;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48rpx;
+}
+.result-title { margin-top: 24rpx; font-size: 32rpx; font-weight: 600; }
+.result-amount { margin-top: 20rpx; font-size: 64rpx; font-weight: 600; }
+.result-sub { margin-top: 8rpx; font-size: 24rpx; color: var(--color-muted); }
+
+.line { padding: 22rpx 0; border-bottom: 1rpx solid var(--color-line); }
+.line:last-child { border-bottom: none; }
+.k { font-size: 28rpx; color: var(--color-text-2); }
+.v { font-size: 28rpx; }
+
+.notice {
+  margin-top: 8rpx;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  background: #FFF8E8;
+}
+.notice-title { display: block; font-size: 26rpx; font-weight: 600; color: #8A6100; }
+.notice-body { display: block; margin-top: 10rpx; font-size: 24rpx; color: #8A6100; line-height: 1.6; }
+.notice-link { display: block; margin-top: 12rpx; font-size: 24rpx; color: var(--color-primary); }
+
+.actions { display: flex; gap: 20rpx; margin-top: 40rpx; }
+.actions .btn-ghost, .actions .btn-primary { flex: 1; }

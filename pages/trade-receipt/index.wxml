@@ -1,0 +1,45 @@
+<view class="page-pad">
+  <view class="result">
+    <text class="result-icon">✓</text>
+    <text class="result-title">{{title}}</text>
+    <view class="result-amount">
+      <pnl-text cents="{{pnl}}" strong />
+    </view>
+    <text wx:if="{{showPnl}}" class="result-sub">本笔已实现盈亏</text>
+    <text wx:else class="result-sub">持仓成本已更新</text>
+  </view>
+
+  <view class="card">
+    <view class="row line">
+      <text class="k">标的</text>
+      <text class="v">{{name}}</text>
+    </view>
+    <view class="row line">
+      <text class="k">方向</text>
+      <text class="v">{{dirText}}</text>
+    </view>
+    <view class="row line">
+      <text class="k">成交</text>
+      <text class="v num">{{priceText}} × {{qtyText}} 股</text>
+    </view>
+    <view class="row line">
+      <text class="k">成交额</text>
+      <text class="v num">{{amountText}}</text>
+    </view>
+    <view class="row" wx:if="{{allocText}}">
+      <text class="k">归属批次</text>
+      <text class="v">{{allocText}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{costUp}}" class="notice">
+    <text class="notice-title">剩余成本已变化</text>
+    <text class="notice-body">{{costUpText}}</text>
+    <text class="notice-link" bindtap="goGuide">查看计算口径说明 ›</text>
+  </view>
+
+  <view class="actions">
+    <view class="btn-ghost" bindtap="goRecords">查看记录</view>
+    <view class="btn-primary" bindtap="goAgain">再记一笔</view>
+  </view>
+</view>

@@ -1,0 +1,53 @@
+<view class="page-pad">
+  <view class="card head">
+    <view class="row">
+      <view>
+        <text class="name">{{name}}</text>
+        <text class="code">{{code}} · {{typeText}}</text>
+      </view>
+      <view class="right">
+        <pnl-text cents="{{unrealized}}" strong />
+        <text class="pct">{{pnlPercent}}</text>
+      </view>
+    </view>
+    <view class="grid">
+      <view class="g-item">
+        <text class="g-k">持仓</text>
+        <text class="g-v num">{{qtyText}} 股</text>
+      </view>
+      <view class="g-item">
+        <text class="g-k">成本</text>
+        <text class="g-v num">{{costText}}</text>
+      </view>
+      <view class="g-item">
+        <text class="g-k">市值</text>
+        <text class="g-v num">{{valueText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row line">
+      <text class="k">最新价</text>
+      <view class="price-edit">
+        <money-input mode="price" value="{{lastPrice}}" bind:change="onPriceChange" placeholder="0.000" />
+        <text class="unit">元</text>
+      </view>
+    </view>
+    <text class="hint">V1.0 由你手动维护，用于估算市值与浮动盈亏</text>
+  </view>
+
+  <view class="section-title">批次流水</view>
+  <view wx:for="{{lots}}" wx:key="lotId" class="lot-row">
+    <view class="lot-left">
+      <text class="lot-date">{{item.dateText}}</text>
+      <text class="lot-sub">买入 {{item.priceText}} · 已卖 {{item.soldText}}</text>
+    </view>
+    <view class="lot-right">
+      <text class="lot-remain num">剩 {{item.remainText}} 股</text>
+      <text class="lot-status {{item.statusClass}}">{{item.statusText}}</text>
+    </view>
+  </view>
+  <view wx:if="{{lots.length === 0}}" class="mini muted">暂无批次</view>
+  <view style="height: 60rpx"></view>
+</view>

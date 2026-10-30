@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "money-input": "../../components/money-input/index",
+    "pnl-text": "../../components/pnl-text/index",
+    "lot-picker": "../../components/lot-picker/index"
+  },
+  "navigationBarTitleText": "记一笔"
+}

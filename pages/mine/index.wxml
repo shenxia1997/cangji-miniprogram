@@ -1,0 +1,37 @@
+<view class="page-pad">
+  <view class="user-card">
+    <view class="avatar">仓</view>
+    <view class="user-info">
+      <text class="user-name">{{nickname}}</text>
+      <text class="user-sub">{{accountCount}} 个账户 · {{txCount}} 笔记录</text>
+    </view>
+  </view>
+
+  <view class="menu">
+    <view class="menu-item" bindtap="goAccounts">
+      <text>账户与费率</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goMethodGuide">
+      <view class="menu-left">
+        <text>计算口径说明</text>
+        <text class="tag">必读</text>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="switchMethod">
+      <text>默认结转方法</text>
+      <text class="menu-value">{{methodText}}</text>
+    </view>
+    <view class="menu-item" bindtap="exportData">
+      <text>数据导出</text>
+      <text class="menu-value">V1.1</text>
+    </view>
+  </view>
+
+  <view class="disclaimer">
+    <text class="disc-title">免责声明</text>
+    <text class="disc-body">本小程序为个人投资记录工具，所有数据由用户自行录入，展示的统计结果仅供参考，不构成任何投资建议。市场有风险，投资需谨慎。</text>
+  </view>
+  <view class="version">仓记 v0.1.0</view>
+</view>

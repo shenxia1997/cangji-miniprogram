@@ -1,0 +1,50 @@
+<view class="page-pad">
+  <view class="toolbar">
+    <view class="pills">
+      <view
+        wx:for="{{filters}}"
+        wx:key="key"
+        class="pill {{filter === item.key ? 'on' : ''}}"
+        bindtap="switchFilter"
+        data-key="{{item.key}}"
+      >{{item.label}}</view>
+    </view>
+    <view class="add-btn" bindtap="goAdd">＋ 记一笔</view>
+  </view>
+
+  <ui-empty
+    wx:if="{{ready && groups.length === 0}}"
+    title="还没有交易记录"
+    desc="记录买入与卖出，盈亏会自动算好"
+    action="记一笔"
+    bind:action="goAdd"
+  />
+
+  <view wx:for="{{groups}}" wx:key="label" class="group">
+    <view class="group-head">
+      <text class="group-label">{{item.label}}</text>
+    </view>
+    <view
+      wx:for="{{item.items}}"
+      wx:for-item="tx"
+      wx:key="uuid"
+      class="tx"
+      bindtap="openTx"
+      data-id="{{tx.uuid}}"
+    >
+      <view class="tx-dir {{tx.dirClass}}">{{tx.dirText}}</view>
+      <view class="tx-main">
+        <view class="tx-title">
+          <text class="tx-name">{{tx.name}}</text>
+          <text wx:if="{{tx.tagText}}" class="tag">{{tx.tagText}}</text>
+        </view>
+        <text class="tx-sub">{{tx.priceText}} × {{tx.qtyText}} 股</text>
+      </view>
+      <view class="tx-right">
+        <text class="tx-amount num">{{tx.amountText}}</text>
+        <text wx:if="{{tx.pnlText}}" class="tx-pnl num">{{tx.pnlText}}</text>
+      </view>
+    </view>
+  </view>
+  <view style="height: 60rpx"></view>
+</view>
