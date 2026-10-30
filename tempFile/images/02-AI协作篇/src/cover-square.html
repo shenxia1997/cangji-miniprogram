@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1080px; overflow:hidden; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#0E1729; position:relative; }
+
+  .grid { position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:60px 60px; }
+  .glow { position:absolute; width:820px; height:820px; border-radius:50%; left:-240px; top:-300px;
+    background:radial-gradient(circle, rgba(47,91,234,0.34) 0%, rgba(47,91,234,0) 70%); }
+
+  .wrap { position:absolute; left:96px; top:114px; width:900px; z-index:3; }
+  .eyebrow { font-size:24px; color:#7C8DB5; letter-spacing:5px; margin-bottom:38px; }
+  .eyebrow b { color:#4D7CFF; font-weight:700; }
+  .h1 { font-size:86px; font-weight:800; color:#FFFFFF; line-height:1.30; letter-spacing:-2px; }
+  .h1 .b { color:#4D7CFF; display:block; }
+  .rule { width:104px; height:5px; background:#4D7CFF; margin:36px 0 28px; border-radius:3px; }
+  .sub { font-size:29px; color:#C6D0E4; line-height:1.62; letter-spacing:0.5px; }
+
+  /* 底部截图，居中压边 */
+  .win { position:absolute; left:50%; margin-left:-248px; bottom:0; width:496px; height:474px;
+         border-radius:38px 38px 0 0; overflow:hidden; z-index:2;
+         box-shadow:0 0 0 1px rgba(255,255,255,0.14), 0 -26px 80px rgba(0,0,0,0.50); }
+  .phone { width:375px; height:812px; background:#F5F7FA; position:relative;
+           transform:scale(1.3227); transform-origin:top left; }
+  .status { height:44px; display:flex; align-items:center; padding:0 24px; font-size:14px; font-weight:600; color:#101828; }
+  .status .icons { margin-left:auto; display:flex; align-items:center; gap:6px; }
+  .sig { display:flex; align-items:flex-end; gap:2px; height:11px; }
+  .sig i { width:3px; background:#101828; border-radius:1px; display:block; }
+  .sig i:nth-child(1){height:4px}.sig i:nth-child(2){height:6px}.sig i:nth-child(3){height:8px}.sig i:nth-child(4){height:11px}
+  .bat { width:24px; height:12px; border:1.5px solid #101828; border-radius:3px; position:relative; }
+  .bat::after { content:""; position:absolute; left:1.5px; top:1.5px; bottom:1.5px; width:15px; background:#101828; border-radius:1px; }
+  .nav { height:44px; position:relative; display:flex; align-items:center; justify-content:center; }
+  .nav .title { font-size:17px; font-weight:600; color:#101828; }
+  .capsule { position:absolute; right:12px; width:87px; height:32px; border-radius:16px;
+    border:0.5px solid rgba(16,24,40,0.14); background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:space-around; }
+  .capsule .dots { display:flex; gap:3px; }
+  .capsule .dots i { width:4px; height:4px; border-radius:50%; background:#101828; display:block; }
+  .capsule .sep { width:0.5px; height:18px; background:rgba(16,24,40,0.16); }
+  .capsule .ring { width:11px; height:11px; border:1.5px solid #101828; border-radius:50%; position:relative; }
+  .capsule .ring::after { content:""; position:absolute; left:50%; top:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; background:#101828; border-radius:50%; }
+
+  .body { padding:0 16px; }
+  .num { font-feature-settings:"tnum"; font-variant-numeric:tabular-nums; }
+  .hero { background:#2F5BEA; border-radius:20px; padding:22px 22px 20px; color:#FFFFFF; margin-top:12px; }
+  .hero .lbl { font-size:12px; opacity:0.78; letter-spacing:1px; }
+  .hero .val { font-size:34px; font-weight:700; margin-top:6px; }
+  .hero .hrow { display:flex; margin-top:20px; }
+  .hero .hitem { flex:1; }
+  .hero .hk { font-size:11px; opacity:0.72; display:block; }
+  .hero .hv { font-size:16px; font-weight:600; margin-top:4px; display:block; }
+
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+
+  <div class="wrap">
+    <div class="eyebrow"><b>仓记</b> · AI 协作实录</div>
+    <div class="h1">AI 写完一个小程序<span class="b">只用了一小时</span></div>
+    <div class="rule"></div>
+    <div class="sub">但那一个小时里<br>它只干了四十分钟的活</div>
+  </div>
+
+  <div class="win">
+    <div class="phone">
+      <div class="status"><span class="num">9:41</span>
+        <span class="icons"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="bat"></span></span>
+      </div>
+      <div class="nav"><span class="title">仓记</span>
+        <span class="capsule"><span class="dots"><i></i><i></i><i></i></span><span class="sep"></span><span class="ring"></span></span>
+      </div>
+      <div class="body">
+        <div class="hero">
+          <span class="lbl">总市值（元）</span>
+          <div class="val num">64,000.00</div>
+          <div class="hrow">
+            <div class="hitem"><span class="hk">持仓成本</span><span class="hv num">60,785.00</span></div>
+            <div class="hitem"><span class="hk">浮动盈亏</span><span class="hv num">+3,215.00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

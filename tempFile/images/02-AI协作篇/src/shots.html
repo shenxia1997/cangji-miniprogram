@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:940px; overflow:hidden; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#EFF2F8; position:relative; }
+
+  .head { position:absolute; top:44px; left:0; width:100%; text-align:center; }
+  .head .t { font-size:26px; color:#8C96AB; letter-spacing:4px; }
+
+  .row { position:absolute; left:50%; transform:translateX(-50%); top:110px; display:flex; gap:36px; }
+
+  .slot { width:299px; height:647px; }
+  .cap { text-align:center; font-size:21px; color:#7A87A3; letter-spacing:2px; margin-top:26px; }
+
+  /* ---------- phone ---------- */
+  .phone {
+    width:375px; height:812px; background:#F5F7FA; border-radius:30px; overflow:hidden;
+    position:relative; transform:scale(0.7974); transform-origin:top left;
+    box-shadow:0 16px 40px rgba(16,24,40,0.16);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  .status { height:44px; display:flex; align-items:center; padding:0 24px; font-size:14px; font-weight:600; color:#101828; }
+  .status .time { letter-spacing:0.5px; }
+  .status .icons { margin-left:auto; display:flex; align-items:center; gap:6px; }
+  .sig { display:flex; align-items:flex-end; gap:2px; height:11px; }
+  .sig i { width:3px; background:#101828; border-radius:1px; display:block; }
+  .sig i:nth-child(1){ height:4px; } .sig i:nth-child(2){ height:6px; }
+  .sig i:nth-child(3){ height:8px; } .sig i:nth-child(4){ height:11px; }
+  .bat { width:24px; height:12px; border:1.5px solid #101828; border-radius:3px; position:relative; }
+  .bat::after { content:""; position:absolute; left:1.5px; top:1.5px; bottom:1.5px; width:15px; background:#101828; border-radius:1px; }
+
+  .nav { height:44px; position:relative; display:flex; align-items:center; justify-content:center; }
+  .nav .title { font-size:17px; font-weight:600; color:#101828; letter-spacing:0.5px; }
+  .nav .back { position:absolute; left:18px; font-size:20px; color:#101828; }
+  .capsule {
+    position:absolute; right:12px; width:87px; height:32px; border-radius:16px;
+    border:0.5px solid rgba(16,24,40,0.14); background:rgba(255,255,255,0.7);
+    display:flex; align-items:center; justify-content:space-around;
+  }
+  .capsule .dots { display:flex; gap:3px; }
+  .capsule .dots i { width:4px; height:4px; border-radius:50%; background:#101828; display:block; }
+  .capsule .sep { width:0.5px; height:18px; background:rgba(16,24,40,0.16); }
+  .capsule .ring { width:11px; height:11px; border:1.5px solid #101828; border-radius:50%; position:relative; }
+  .capsule .ring::after { content:""; position:absolute; left:50%; top:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; background:#101828; border-radius:50%; }
+
+  .body { padding:0 16px; }
+  .num { font-feature-settings:"tnum"; font-variant-numeric:tabular-nums; }
+
+  /* hero */
+  .hero { background:#2F5BEA; border-radius:20px; padding:22px 22px 20px; color:#FFFFFF; margin-top:12px; }
+  .hero .lbl { font-size:12px; opacity:0.78; letter-spacing:1px; }
+  .hero .val { font-size:34px; font-weight:700; margin-top:6px; letter-spacing:-0.5px; }
+  .hero .hrow { display:flex; margin-top:20px; }
+  .hero .hitem { flex:1; }
+  .hero .hk { font-size:11px; opacity:0.72; display:block; }
+  .hero .hv { font-size:16px; font-weight:600; margin-top:4px; display:block; }
+  .hero .hv .pct { font-size:12px; margin-left:6px; opacity:0.9; }
+
+  .shead { display:flex; align-items:center; margin:20px 4px 12px; }
+  .shead .st { font-size:15px; font-weight:700; color:#101828; }
+  .shead .sm { margin-left:auto; font-size:11px; color:#98A2B3; }
+
+  .pos { background:#FFFFFF; border-radius:16px; padding:15px 16px; display:flex; align-items:center; margin-bottom:10px; }
+  .pos .l { flex:1; }
+  .pos .nm { font-size:15px; font-weight:600; color:#101828; display:block; }
+  .pos .cd { font-size:11px; color:#98A2B3; margin-top:4px; display:block; }
+  .pos .m { text-align:right; margin-right:22px; }
+  .pos .qty { font-size:13px; color:#344054; display:block; font-weight:600; }
+  .pos .cost { font-size:11px; color:#98A2B3; margin-top:4px; display:block; }
+  .pos .r { text-align:right; min-width:78px; }
+  .pos .pv { font-size:15px; font-weight:700; display:block; }
+  .pos .pp { font-size:11px; margin-top:4px; display:block; }
+  .up { color:#E4453A; } .down { color:#12A45B; }
+
+  .fab { position:absolute; left:50%; transform:translateX(-50%); bottom:84px; background:#2F5BEA; color:#FFFFFF; font-size:14px; font-weight:600; padding:11px 26px; border-radius:22px; box-shadow:0 8px 20px rgba(47,91,234,0.34); }
+
+  .tabbar { position:absolute; left:0; right:0; bottom:0; height:64px; background:#FFFFFF; border-top:0.5px solid #EDF0F4; display:flex; padding-bottom:10px; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
+  .tab svg { display:block; }
+  .tab span { font-size:9px; color:#98A2B3; letter-spacing:0.5px; }
+  .tab.on span { color:#2F5BEA; }
+
+  /* receipt */
+  .result { text-align:center; padding:26px 0 22px; }
+  .ricon { width:44px; height:44px; border-radius:22px; background:#E8EEFF; color:#2F5BEA; font-size:22px; line-height:44px; margin:0 auto; }
+  .rtitle { font-size:16px; font-weight:700; color:#101828; margin-top:14px; display:block; }
+  .ramt { font-size:38px; font-weight:800; margin-top:10px; display:block; letter-spacing:-0.5px; }
+  .rsub { font-size:12px; color:#98A2B3; margin-top:8px; display:block; }
+
+  .card { background:#FFFFFF; border-radius:16px; padding:4px 16px; }
+  .crow { display:flex; align-items:center; padding:14px 0; }
+  .crow.line { border-bottom:0.5px solid #EDF0F4; }
+  .crow .k { font-size:13px; color:#98A2B3; }
+  .crow .v { margin-left:auto; font-size:13px; color:#101828; font-weight:600; }
+
+  .notice { background:#FFF6ED; border:1px solid #FFE0BF; border-radius:16px; padding:15px 16px; margin-top:14px; }
+  .notice .nt { font-size:13px; font-weight:700; color:#8A4B00; display:block; }
+  .notice .nb { font-size:12px; color:#8A5A22; line-height:1.6; margin-top:7px; display:block; }
+  .notice .nl { font-size:12px; color:#2F5BEA; font-weight:600; margin-top:10px; display:block; }
+
+  .acts { display:flex; gap:12px; margin-top:22px; }
+  .acts div { flex:1; text-align:center; font-size:14px; font-weight:600; padding:13px 0; border-radius:22px; }
+  .bg { background:#FFFFFF; color:#5A6474; border:1px solid #E3E8F0; }
+  .bp { background:#2F5BEA; color:#FFFFFF; }
+
+  /* guide */
+  .intro { padding:16px 2px 4px; }
+  .intro .it { font-size:17px; font-weight:800; color:#101828; line-height:1.5; display:block; }
+  .intro .ib { font-size:12px; color:#667085; line-height:1.7; margin-top:9px; display:block; }
+  .ctitle { font-size:13px; font-weight:700; color:#101828; padding:14px 0 4px; }
+  .hint { font-size:11px; color:#98A2B3; padding:10px 0 14px; display:block; line-height:1.6; }
+  .cmp { display:flex; gap:10px; margin-top:12px; }
+  .cmp .c { flex:1; background:#FFFFFF; border-radius:16px; padding:15px 14px; }
+  .cmp .c.hl { background:#EEF3FF; border:1px solid #CBD8FF; }
+  .cmp .ct { font-size:12px; color:#667085; display:block; }
+  .cmp .cd { font-size:10px; color:#98A2B3; margin-top:3px; display:block; }
+  .cmp .cp { font-size:23px; font-weight:800; margin-top:10px; display:block; letter-spacing:-0.5px; }
+  .cmp .cs { font-size:10px; color:#98A2B3; margin-top:8px; display:block; }
+</style>
+</head>
+<body>
+  <div class="head"><div class="t">仓 记 · 实 际 页 面</div></div>
+
+  <div class="row">
+
+    <!-- 1 持仓 -->
+    <div>
+      <div class="slot">
+        <div class="phone">
+          <div class="status"><span class="time num">9:41</span>
+            <span class="icons">
+              <span class="sig"><i></i><i></i><i></i><i></i></span>
+              <span class="bat"></span>
+            </span>
+          </div>
+          <div class="nav"><span class="title">仓记</span>
+            <span class="capsule"><span class="dots"><i></i><i></i><i></i></span><span class="sep"></span><span class="ring"></span></span>
+          </div>
+          <div class="body">
+            <div class="hero">
+              <span class="lbl">总市值（元）</span>
+              <div class="val num">64,000.00</div>
+              <div class="hrow">
+                <div class="hitem"><span class="hk">持仓成本</span><span class="hv num">60,785.00</span></div>
+                <div class="hitem"><span class="hk">浮动盈亏</span><span class="hv num">+3,215.00<span class="pct">+5.29%</span></span></div>
+              </div>
+            </div>
+            <div class="shead"><span class="st">持仓明细</span><span class="sm">2 个标的</span></div>
+
+            <div class="pos">
+              <div class="l"><span class="nm">沪深300ETF</span><span class="cd">510300 · 场内基金</span></div>
+              <div class="m"><span class="qty num">1,000 股</span><span class="cost">成本 48.545</span></div>
+              <div class="r"><span class="pv up num">+3,455.00</span><span class="pp up num">+7.12%</span></div>
+            </div>
+
+            <div class="pos">
+              <div class="l"><span class="nm">中证500ETF</span><span class="cd">510500 · 场内基金</span></div>
+              <div class="m"><span class="qty num">2,000 份</span><span class="cost">成本 6.120</span></div>
+              <div class="r"><span class="pv down num">-240.00</span><span class="pp down num">-1.96%</span></div>
+            </div>
+          </div>
+          <div class="fab">＋ 记一笔</div>
+          <div class="tabbar">
+            <div class="tab on">
+              <svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="10" width="3.4" height="7" rx="1" fill="#2F5BEA"/><rect x="8.3" y="6" width="3.4" height="11" rx="1" fill="#2F5BEA"/><rect x="14.6" y="2.5" width="3.4" height="14.5" rx="1" fill="#2F5BEA"/></svg>
+              <span>持仓</span>
+            </div>
+            <div class="tab">
+              <svg width="20" height="20" viewBox="0 0 20 20"><rect x="2.5" y="3" width="15" height="2.4" rx="1.2" fill="#98A2B3"/><rect x="2.5" y="8.8" width="15" height="2.4" rx="1.2" fill="#98A2B3"/><rect x="2.5" y="14.6" width="10" height="2.4" rx="1.2" fill="#98A2B3"/></svg>
+              <span>记录</span>
+            </div>
+            <div class="tab">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#98A2B3" stroke-width="2"/><path d="M10 2 A8 8 0 0 1 18 10 L10 10 Z" fill="#98A2B3"/></svg>
+              <span>统计</span>
+            </div>
+            <div class="tab">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="6.6" r="3.6" fill="none" stroke="#98A2B3" stroke-width="2"/><path d="M3.4 17.4c0-3.6 3-5.6 6.6-5.6s6.6 2 6.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>我的</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">持仓 · 成本与盈亏</div>
+    </div>
+
+    <!-- 2 交易回执 -->
+    <div>
+      <div class="slot">
+        <div class="phone">
+          <div class="status"><span class="time num">9:41</span>
+            <span class="icons"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="bat"></span></span>
+          </div>
+          <div class="nav"><span class="back">‹</span><span class="title">交易回执</span>
+            <span class="capsule"><span class="dots"><i></i><i></i><i></i></span><span class="sep"></span><span class="ring"></span></span>
+          </div>
+          <div class="body">
+            <div class="result">
+              <div class="ricon">✓</div>
+              <span class="rtitle">已记录</span>
+              <span class="ramt up num">+1,365.07</span>
+              <span class="rsub">本笔已实现盈亏</span>
+            </div>
+            <div class="card">
+              <div class="crow line"><span class="k">标的</span><span class="v">沪深300ETF</span></div>
+              <div class="crow line"><span class="k">方向</span><span class="v">卖出</span></div>
+              <div class="crow line"><span class="k">成交</span><span class="v num">52.00 × 300 股</span></div>
+              <div class="crow line"><span class="k">成交额</span><span class="v num">15,600.00</span></div>
+              <div class="crow"><span class="k">归属批次</span><span class="v">第三批 200 + 第二批 100</span></div>
+            </div>
+            <div class="notice">
+              <span class="nt">剩余成本已变化</span>
+              <span class="nb">卖掉的是低成本批次，剩余 700 股成本由 33,981.50 升到 34,340.67，均价 48.545 → 49.058。</span>
+              <span class="nl">查看计算口径说明 ›</span>
+            </div>
+            <div class="acts"><div class="bg">查看记录</div><div class="bp">再记一笔</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">交易回执 · 本笔盈亏</div>
+    </div>
+
+    <!-- 3 口径说明 -->
+    <div>
+      <div class="slot">
+        <div class="phone">
+          <div class="status"><span class="time num">9:41</span>
+            <span class="icons"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="bat"></span></span>
+          </div>
+          <div class="nav"><span class="back">‹</span><span class="title">计算口径</span>
+            <span class="capsule"><span class="dots"><i></i><i></i><i></i></span><span class="sep"></span><span class="ring"></span></span>
+          </div>
+          <div class="body">
+            <div class="intro">
+              <span class="it">为什么同一笔卖出，会有两个盈亏数字？</span>
+              <span class="ib">因为「卖的是哪一批」可以由你指定。下面用同一组买入、同一笔卖出，展示两种口径的差别。</span>
+            </div>
+            <div class="card" style="margin-top:14px">
+              <div class="ctitle">示例：三批买入</div>
+              <div class="crow line"><span class="k">第一批</span><span class="v num">200 股 @ 51.80</span></div>
+              <div class="crow line"><span class="k">第二批</span><span class="v num">500 股 @ 48.20</span></div>
+              <div class="crow"><span class="k">第三批</span><span class="v num">300 股 @ 46.90</span></div>
+              <span class="hint">合计 1000 股，成本 48,545 元，加权均价 48.545 元</span>
+            </div>
+            <div class="cmp">
+              <div class="c"><span class="ct">加权平均</span><span class="cd">未指定批次时使用</span><span class="cp up num">+1,005.90</span><span class="cs">剩余均价 48.545 元</span></div>
+              <div class="c hl"><span class="ct">指定批次</span><span class="cd">做 T 时手动选择</span><span class="cp up num">+1,365.07</span><span class="cs">剩余均价 49.058 元</span></div>
+            </div>
+            <div class="card" style="margin-top:12px">
+              <div class="ctitle">差异从哪里来</div>
+              <span class="hint" style="padding:6px 0 12px; font-size:11px; color:#667085;">指定批次时，本笔结转用的是「你选中的那一批」的买入成本，而不是全仓均价。卖掉的如果是低成本批次，本笔盈亏会更高；同时剩余持仓的加权成本会被抬高。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">口径对照 · A/B 两个答案</div>
+    </div>
+
+  </div>
+</body>
+</html>

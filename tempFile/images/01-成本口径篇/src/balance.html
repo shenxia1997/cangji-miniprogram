@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1140px; overflow:hidden; }
+  body {
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+    background:#F6F8FD; position:relative; padding:60px 56px;
+  }
+  .title { font-size:56px; color:#101828; font-weight:800; letter-spacing:0.5px; line-height:1.3; }
+  .title b { color:#2F5BEA; }
+  .sub { font-size:28px; color:#7A87A3; margin-top:18px; letter-spacing:1px; }
+
+  .card {
+    background:#FFFFFF; border-radius:22px; padding:30px 34px 34px;
+    box-shadow:0 10px 30px rgba(16,24,40,0.08);
+  }
+  .ca { position:absolute; left:56px; right:56px; top:214px; }
+  .cb { position:absolute; left:56px; right:56px; top:588px; }
+
+  .clabel { font-size:26px; color:#98A2B3; letter-spacing:3px; }
+  .cols { display:flex; align-items:flex-end; margin-top:26px; }
+  .col { flex:1; }
+  .col.narrow { flex:0 0 250px; text-align:right; }
+  .ck { font-size:24px; color:#7A87A3; letter-spacing:1px; }
+  .cv { font-size:52px; font-weight:800; color:#101828; margin-top:12px; letter-spacing:-1px; line-height:1; }
+  .cv.blue { color:#2F5BEA; }
+  .cv.dim { color:#5A6784; }
+
+  .arrowzone { position:absolute; left:56px; right:56px; top:452px; height:136px; }
+  .arrowlabel {
+    position:absolute; left:50%; transform:translateX(-50%); top:26px;
+    background:#2F5BEA; color:#FFFFFF; font-size:24px; font-weight:700;
+    padding:12px 28px; border-radius:999px; letter-spacing:1px; white-space:nowrap;
+  }
+  .ar { position:absolute; left:50%; margin-left:-13px; width:26px; }
+  .ar.top { top:0; height:26px; }
+  .ar.bot { top:100px; height:26px; }
+
+  .total {
+    position:absolute; left:56px; right:56px; bottom:96px;
+    background:#101828; border-radius:22px; padding:34px 40px; text-align:center;
+  }
+  .total .k { font-size:24px; color:#8C99B5; letter-spacing:3px; }
+  .total .v { font-size:44px; color:#FFFFFF; font-weight:800; margin-top:14px; letter-spacing:0.5px; }
+  .total .v span { color:#7FA0FF; }
+  .foot { position:absolute; left:0; bottom:44px; width:100%; text-align:center; font-size:22px; color:#98A2B3; letter-spacing:2px; }
+</style>
+</head>
+<body>
+  <div class="title">359.17 元，<b>换了个位置</b></div>
+  <div class="sub">同一笔卖出，两种口径，差额相等</div>
+
+  <div class="card ca">
+    <div class="clabel">已 卖 出 部 分 的 成 本</div>
+    <div class="cols">
+      <div class="col"><div class="ck">摊薄口径</div><div class="cv">14,563.50</div></div>
+      <div class="col"><div class="ck">批次口径</div><div class="cv">14,204.33</div></div>
+      <div class="col narrow"><div class="ck">差额</div><div class="cv blue">&#8722;359.17</div></div>
+    </div>
+  </div>
+
+  <div class="arrowzone">
+    <svg class="ar top" viewBox="0 0 26 26"><line x1="13" y1="2" x2="13" y2="16" stroke="#2F5BEA" stroke-width="3"/><polyline points="5,12 13,22 21,12" fill="none" stroke="#2F5BEA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="arrowlabel">同一笔 359.17，挪到下面</div>
+    <svg class="ar bot" viewBox="0 0 26 26"><line x1="13" y1="2" x2="13" y2="16" stroke="#2F5BEA" stroke-width="3"/><polyline points="5,12 13,22 21,12" fill="none" stroke="#2F5BEA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <div class="card cb">
+    <div class="clabel">剩 余 持 仓 的 成 本</div>
+    <div class="cols">
+      <div class="col"><div class="ck">摊薄口径</div><div class="cv">33,981.50</div></div>
+      <div class="col"><div class="ck">批次口径</div><div class="cv">34,340.67</div></div>
+      <div class="col narrow"><div class="ck">差额</div><div class="cv blue">+359.17</div></div>
+    </div>
+  </div>
+
+  <div class="total">
+    <div class="k">两 边 一 加 一 减</div>
+    <div class="v">合计仍是 <span>48,545</span> 元，一分没变</div>
+  </div>
+
+  <div class="foot">两种算法都没有错，只是在回答不同的问题</div>
+</body>
+</html>

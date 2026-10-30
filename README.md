@@ -48,7 +48,11 @@ components/  金额输入、盈亏文本、批次选择浮层、空态
 pages/       持仓 / 记录 / 统计 / 我的 + 录入 / 回执 / 标的详情 / 口径说明 / 账户
 cloudfunctions/  导出、服务端校验、脏数据修复、回收站清理
 tests/       金标准夹具、单元测试、属性测试、性能基准
+docs/        云开发配置与测试报告
+tempFile/    交付物归档：文档、对外文章、配图（非代码，可整目录删除）
 ```
+
+文档与文章在 `tempFile/`，索引见 [tempFile/README.md](tempFile/README.md)。
 
 ## 可验证的正确性
 

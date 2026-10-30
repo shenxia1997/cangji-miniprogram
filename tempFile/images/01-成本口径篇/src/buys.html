@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:930px; overflow:hidden; }
+  body {
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+    background:#F6F8FD; padding:56px 56px 0;
+  }
+  .title { font-size:52px; color:#101828; font-weight:800; letter-spacing:0.5px; line-height:1.3; }
+  .title b { color:#2F5BEA; }
+  .sub { font-size:26px; color:#7A87A3; margin-top:14px; letter-spacing:1px; }
+
+  .rows { margin-top:40px; }
+  .row { margin-bottom:26px; }
+  .rhead { display:flex; align-items:baseline; margin-bottom:12px; }
+  .dot { width:14px; height:14px; border-radius:4px; margin-right:14px; position:relative; top:0; flex:0 0 auto; }
+  .rt { font-size:28px; color:#344054; letter-spacing:0.5px; }
+  .rt b { color:#101828; font-weight:800; }
+  .rv { margin-left:auto; font-size:30px; font-weight:800; color:#101828; letter-spacing:-0.5px; }
+  .rv span { font-size:22px; font-weight:400; color:#98A2B3; margin-left:6px; letter-spacing:0; }
+
+  .track { width:100%; height:18px; background:#E7ECF6; border-radius:9px; overflow:hidden; }
+  .fill { height:100%; border-radius:9px; }
+
+  .c1 { background:#1E44C9; }
+  .c2 { background:#2F5BEA; }
+  .c3 { background:#6E8FF3; }
+
+  .stacklabel { margin-top:46px; font-size:24px; color:#98A2B3; letter-spacing:3px; }
+  .stack { display:flex; width:100%; height:64px; border-radius:12px; overflow:hidden; margin-top:16px; }
+  .stack div { height:100%; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:22px; font-weight:700; letter-spacing:0.5px; }
+  .stack .s1 { background:#1E44C9; }
+  .stack .s2 { background:#2F5BEA; }
+  .stack .s3 { background:#6E8FF3; }
+  .stackfoot { display:flex; margin-top:14px; font-size:24px; color:#667085; }
+  .stackfoot .right { margin-left:auto; font-weight:700; color:#101828; }
+
+  .result {
+    position:absolute; left:56px; right:56px; bottom:96px;
+    background:#101828; border-radius:20px; padding:32px 38px;
+    display:flex; align-items:center;
+  }
+  .result .lab { font-size:24px; color:#8C99B5; letter-spacing:2px; }
+  .result .eq { margin-left:auto; font-size:40px; color:#FFFFFF; font-weight:800; letter-spacing:0; }
+  .result .eq span { color:#7FA0FF; }
+  .result .eq em { font-style:normal; font-size:26px; color:#8C99B5; font-weight:400; margin:0 14px; }
+
+  .foot { position:absolute; left:0; bottom:44px; width:100%; text-align:center; font-size:22px; color:#98A2B3; letter-spacing:2px; }
+</style>
+</head>
+<body>
+  <div class="title">三笔买入，最后算出 <b>48.545</b></div>
+  <div class="sub">每一笔都含 5 元手续费，手续费也是成本</div>
+
+  <div class="rows">
+    <div class="row">
+      <div class="rhead">
+        <span class="dot c1"></span>
+        <span class="rt">第一批　<b>200</b> 股 @ <b>51.80</b></span>
+        <span class="rv">10,365<span>元</span></span>
+      </div>
+      <div class="track"><div class="fill c1" style="width:21.35%"></div></div>
+    </div>
+
+    <div class="row">
+      <div class="rhead">
+        <span class="dot c2"></span>
+        <span class="rt">第二批　<b>500</b> 股 @ <b>48.20</b></span>
+        <span class="rv">24,105<span>元</span></span>
+      </div>
+      <div class="track"><div class="fill c2" style="width:49.66%"></div></div>
+    </div>
+
+    <div class="row">
+      <div class="rhead">
+        <span class="dot c3"></span>
+        <span class="rt">第三批　<b>300</b> 股 @ <b>46.90</b></span>
+        <span class="rv">14,075<span>元</span></span>
+      </div>
+      <div class="track"><div class="fill c3" style="width:28.99%"></div></div>
+    </div>
+  </div>
+
+  <div class="stacklabel">合 计</div>
+  <div class="stack">
+    <div class="s1" style="width:21.35%">10,365</div>
+    <div class="s2" style="width:49.66%">24,105</div>
+    <div class="s3" style="width:28.99%">14,075</div>
+  </div>
+  <div class="stackfoot">
+    <span>1000 股 · 合计 48,545 元</span>
+  </div>
+
+  <div class="result">
+    <div class="lab">平 均 成 本</div>
+    <div class="eq">48,545 <em>&#247;</em> 1000 股 <em>&#61;</em> <span>48.545</span> 元</div>
+  </div>
+
+  <div class="foot">现在卖掉 300 股，这笔成本该扣多少？</div>
+</body>
+</html>

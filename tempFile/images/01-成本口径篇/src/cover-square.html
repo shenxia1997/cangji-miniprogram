@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1080px; overflow:hidden; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif; background:#0E1729; position:relative; }
+  .grid {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:64px 64px;
+  }
+  .glow {
+    position:absolute; width:760px; height:760px; border-radius:50%;
+    right:-240px; top:-260px;
+    background:radial-gradient(circle, rgba(47,91,234,0.42) 0%, rgba(47,91,234,0) 68%);
+  }
+  .wrap { position:absolute; left:96px; top:332px; width:900px; }
+  .eyebrow { font-size:24px; color:#7C8DB5; letter-spacing:5px; margin-bottom:44px; }
+  .eyebrow b { color:#4D7CFF; font-weight:700; }
+  .nums { display:flex; align-items:baseline; }
+  .n1 { font-size:104px; font-weight:800; color:#FFFFFF; letter-spacing:-3px; line-height:1; }
+  .arw { font-size:64px; color:#4D7CFF; margin:0 22px; font-weight:300; }
+  .n2 { font-size:104px; font-weight:800; color:#4D7CFF; letter-spacing:-3px; line-height:1; }
+  .rule { width:110px; height:5px; background:#4D7CFF; margin:52px 0 40px; border-radius:3px; }
+  .sub { font-size:42px; color:#C6D0E4; line-height:1.62; letter-spacing:1px; }
+  .sub em { font-style:normal; color:#FFFFFF; font-weight:800; }
+  .foot { position:absolute; left:96px; bottom:76px; font-size:24px; color:#5A6B8C; letter-spacing:3px; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow"><b>仓记</b> · 持仓成本</div>
+    <div class="nums">
+      <span class="n1">48.545</span>
+      <span class="arw">&#8594;</span>
+      <span class="n2">49.058</span>
+    </div>
+    <div class="rule"></div>
+    <div class="sub">卖掉一笔赚钱的单子<br>持仓成本为什么<em>反而涨了</em></div>
+  </div>
+  <div class="foot">一次卖出之后，账本里发生了什么</div>
+</body>
+</html>

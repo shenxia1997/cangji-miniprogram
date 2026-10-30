@@ -1,0 +1,439 @@
+# 仓记小程序 · 任务清单（机器可读镜像）
+# 以《仓记小程序-AI开发执行手册.md》为准；本文件仅用于自动遍历与进度统计。
+# 状态字段：pending / in_progress / done / blocked
+
+meta:
+  project_root: "C:/Users/zetatech/WorkBuddy/2026-10-30-09-50-38/cangji-miniprogram"
+  source_docs:
+    srs: "output/20261030-095051-fundstock-srs/stage3/基金股票记账小程序需求文档_V1.1.docx"
+    tech: "output/20261030-132400-tech-design/stage3/基金股票记账小程序技术方案.docx"
+    ui: "output/20261030-095051-fundstock-srs/ui/仓记小程序UI设计稿.html"
+  total_tasks: 40
+  hard_gates: [T14, T29]
+
+invariants:
+  - id: I1
+    name: 份额守恒
+    expr: "position.quantity == sum(buy.quantity) - sum(sell.quantity)"
+  - id: I2
+    name: 批次守恒
+    expr: "sum(lot.remainQuantity) == position.quantity"
+  - id: I3
+    name: 成本守恒
+    expr: "sum(costOut) + sum(lot.remainCost) == initialCostTotal"
+  - id: I4
+    name: 总额守恒
+    expr: "sum(realizedPnl) == sum(sell.amount) - sum(costOut) - sum(sell.feeTotal)"
+  - id: I5
+    name: 删除幂等
+  - id: I6
+    name: 顺序无关
+    expr: "shuffle(txns) -> replay -> 结果一致"
+
+golden_fixtures:
+  buys:
+    - { id: B1, qty: 200000, priceLi: 51800, feeCents: 500, amount: 1036000, cost: 1036500 }
+    - { id: B2, qty: 500000, priceLi: 48200, feeCents: 500, amount: 2410000, cost: 2410500 }
+    - { id: B3, qty: 300000, priceLi: 46900, feeCents: 500, amount: 1407000, cost: 1407500 }
+  initial:
+    quantity: 1000000
+    costTotal: 4854500
+    unitPriceLi: 48545
+  case_A_weighted:
+    desc: "加权卖出 300 股 @52.00 费 30.60"
+    sellAmount: 1560000
+    costOut: 1456350
+    realizedPnl: 100590
+    remainCost: 3398150
+    remainQty: 700000
+  case_B_specified:
+    desc: "指定批次卖 300 股 @52.00 费 30.60（B3:200 + B2:100）"
+    allocs: [{ lotId: B3, qty: 200000 }, { lotId: B2, qty: 100000 }]
+    costOutB3: 938333
+    costOutB2: 482100
+    costOut: 1420433
+    realizedPnl: 136507
+    remainCost: 3434067
+    remainQty: 700000
+    remainUnitPriceLi: 49058
+    b3Remain: { qty: 100000, cost: 469167, status: partial }
+    b2Remain: { qty: 400000, cost: 1928400, status: partial }
+  case_C_split:
+    desc: "拆分卖 500 股 @50.00 费 30.00（B3:300 全清 + B2:200）"
+    allocs: [{ lotId: B3, qty: 300000 }, { lotId: B2, qty: 200000 }]
+    sellAmount: 2500000
+    costOut: 2371700
+    realizedPnl: 125300
+    remainCost: 2482800
+    remainQty: 500000
+    b3Status: closed
+
+units:
+  price: 厘            # 元 * 1000
+  quantity: 千分之一股   # 股 * 1000
+  money: 分            # 元 * 100
+  amount_formula: "round(price * quantity / 10000)"
+
+tasks:
+  - id: T01
+    phase: 0
+    title: 工程初始化
+    files: [package.json, tsconfig.json, jest.config.js, project.config.json, .eslintrc.js]
+    depends_on: []
+    verify: "npm run check"
+    done_when: "tsc --noEmit 零错误，scripts 六项齐全"
+    status: pending
+  - id: T02
+    phase: 0
+    title: 目录与页面空壳
+    files: ["app.json", "app.ts", "9 个页面 *4 文件"]
+    depends_on: [T01]
+    verify: "开发者工具编译无报错，4 Tab 可切换，9 路由可打开"
+    done_when: "路由与手册 §2.2 一致"
+    status: pending
+  - id: T03
+    phase: 0
+    title: 设计令牌
+    files: [styles/tokens.wxss, app.wxss]
+    depends_on: [T01]
+    verify: "抽查 8 个色值与 UI 稿一致"
+    done_when: "页面样式无硬编码色值"
+    status: pending
+  - id: T04
+    phase: 1
+    title: 领域类型
+    files: [domain/types.ts]
+    depends_on: [T01]
+    contract: "§2.3"
+    verify: "npm run check"
+    done_when: "字段名与 §2.3 完全一致"
+    status: pending
+  - id: T05
+    phase: 1
+    title: 金额模块
+    files: [domain/money.ts, tests/domain/money.test.ts]
+    depends_on: [T04]
+    contract: "§2.4"
+    verify: "npm run test:golden"
+    done_when: "mulPriceQty(51800,200000)==1036000；unitPriceLi(4854500,1000000)==48545"
+    status: pending
+  - id: T06
+    phase: 1
+    title: 重放-排序与过滤
+    files: [domain/replay.ts]
+    depends_on: [T04]
+    contract: "§2.7 步骤1-2"
+    verify: "npm run check"
+    done_when: "打乱输入结果一致"
+    status: pending
+  - id: T07
+    phase: 1
+    title: 重放-买入与批次派生
+    files: [domain/replay.ts, domain/lots.ts]
+    depends_on: [T06]
+    contract: "§2.6 S1、§2.5.3"
+    golden: "§3.1"
+    verify: "npm run test:golden"
+    done_when: "ΣcostTotal==4854500 且 Σquantity==1000000"
+    status: pending
+  - id: T08
+    phase: 1
+    title: 加权结转
+    files: [domain/pnl.ts, tests/domain/pnl.test.ts]
+    depends_on: [T07]
+    contract: "§2.5.1"
+    golden: "§3.2"
+    verify: "npm run test:golden"
+    done_when: "情形A 结转1456350/盈亏100590/剩余3398150"
+    status: pending
+  - id: T09
+    phase: 1
+    title: 指定批次结转
+    files: [domain/allocations.ts, tests/domain/allocations.test.ts]
+    depends_on: [T07, T08]
+    contract: "§2.5.2"
+    golden: "§3.3"
+    verify: "npm run test:golden"
+    done_when: "情形B 6 个期望值全部命中"
+    blocks_phase: true
+    status: pending
+  - id: T10
+    phase: 1
+    title: 批次状态与持仓聚合
+    files: [domain/lots.ts, domain/replay.ts]
+    depends_on: [T07]
+    contract: "§2.5.3"
+    verify: "npm run check"
+    done_when: "情形C 中 B3 状态为 closed；ΣremainQuantity==position.quantity"
+    status: pending
+  - id: T11
+    phase: 1
+    title: 拆分卖出
+    files: [domain/allocations.ts]
+    depends_on: [T09]
+    contract: "§2.5.2"
+    golden: "§3.4"
+    verify: "npm run test:golden"
+    done_when: "情形C 结转2371700/盈亏125300/剩余2482800"
+    status: pending
+  - id: T12
+    phase: 1
+    title: 异常捕获
+    files: [domain/errors.ts, domain/replay.ts]
+    depends_on: [T09]
+    contract: "§2.8"
+    verify: "npm run check"
+    done_when: "超卖夹具返回 1 条 E_OVERSELL 且其余正常"
+    status: pending
+  - id: T13
+    phase: 1
+    title: 统计聚合
+    files: [domain/stats.ts]
+    depends_on: [T08]
+    contract: "§2.5.3"
+    verify: "npm run check"
+    done_when: "与手工累加值一致"
+    status: pending
+  - id: T14
+    phase: 1
+    title: 属性测试
+    files: [tests/domain/invariants.prop.test.ts]
+    depends_on: [T08, T09, T10, T11, T12]
+    contract: "I1-I6"
+    verify: "npm run test:prop"
+    done_when: "1 万组随机序列，6 条不变量全绿"
+    blocks_phase: true
+    status: pending
+  - id: T15
+    phase: 2
+    title: Repository
+    files: [services/repo.ts]
+    depends_on: [T04]
+    contract: "§2.9"
+    verify: "npm run check"
+    done_when: "MemRepo 四用例通过"
+    status: pending
+  - id: T16
+    phase: 2
+    title: 本地分片存储
+    files: [services/storage.ts]
+    depends_on: [T15]
+    verify: "npm run check"
+    done_when: "3000 笔写入后完整读回，哈希一致"
+    status: pending
+  - id: T17
+    phase: 2
+    title: 快照与版本失效
+    files: [services/snapshot.ts]
+    depends_on: [T14, T16]
+    verify: "npm run check"
+    done_when: "版本未变时二次读不触发 replay"
+    status: pending
+  - id: T18
+    phase: 2
+    title: 同步队列
+    files: [services/queue.ts]
+    depends_on: [T15]
+    verify: "npm run check"
+    done_when: "断网 3 笔后恢复全部同步且无重复"
+    status: pending
+  - id: T19
+    phase: 2
+    title: 登录与合并
+    files: [services/auth.ts]
+    depends_on: [T18]
+    verify: "npm run check"
+    done_when: "匿名 2 笔登录后仍为 2 笔"
+    status: pending
+  - id: T20
+    phase: 2
+    title: 账户与标的配置
+    files: [services/config.ts]
+    depends_on: [T15]
+    verify: "npm run check"
+    done_when: "删除有记录账户被拒并给迁移提示"
+    status: pending
+  - id: T21
+    phase: 3
+    title: 金额输入框
+    files: [components/money-input/]
+    depends_on: [T03, T05]
+    contract: "§2.4"
+    verify: "npm run check"
+    done_when: "50.2→5020；50.205→5021；基金三位小数 1234 厘"
+    status: pending
+  - id: T22
+    phase: 3
+    title: 盈亏文本
+    files: [components/pnl-text/]
+    depends_on: [T03, T05]
+    verify: "npm run check"
+    done_when: "四种取值渲染与设计稿 01 屏一致"
+    status: pending
+  - id: T23
+    phase: 3
+    title: 批次选择浮层
+    files: [components/lot-picker/]
+    depends_on: [T09, T21]
+    contract: "§2.5.2"
+    golden: "§3.3"
+    verify: "npm run check"
+    done_when: "勾选 B3:200+B2:100 后预演盈亏==136507"
+    status: pending
+  - id: T24
+    phase: 3
+    title: 空态与骨架
+    files: [components/ui-empty/]
+    depends_on: [T03]
+    verify: "npm run check"
+    done_when: "3 页面复用无样式分叉"
+    status: pending
+  - id: T25
+    phase: 3
+    title: 流水列表
+    files: [components/tx-list/]
+    depends_on: [T03]
+    verify: "npm run check"
+    done_when: "1000 条滚动无白屏，setData ≤64KB"
+    status: pending
+  - id: T26
+    phase: 4
+    title: 持仓首页
+    files: [pages/position/]
+    depends_on: [T17, T22, T24]
+    verify: "人工走查（设计稿 01）"
+    done_when: "页面内零金额运算，数字全部来自快照"
+    status: pending
+  - id: T27
+    phase: 4
+    title: 交易流水页
+    files: [pages/records/]
+    depends_on: [T25]
+    verify: "人工走查（设计稿 02）"
+    done_when: "情形B 卖出行显示「批次 B3 · 46.90」"
+    status: pending
+  - id: T28
+    phase: 4
+    title: 录入页-买入
+    files: [pages/trade-edit/]
+    depends_on: [T21, T20]
+    verify: "人工走查（设计稿 03）"
+    done_when: "单笔 ≤3 次点击；非法代码被拦截"
+    status: pending
+  - id: T29
+    phase: 4
+    title: 录入页-卖出与批次归属
+    files: [pages/trade-edit/]
+    depends_on: [T23, T28]
+    contract: "§2.5.2、§2.7"
+    golden: "§3.3"
+    verify: "人工走查 + 库内数据核对"
+    done_when: "allocations 两项且 method=='specified'；超仓被阻断"
+    blocks_phase: true
+    status: pending
+  - id: T30
+    phase: 4
+    title: 保存回执
+    files: [pages/trade-receipt/]
+    depends_on: [T29]
+    golden: "§3.3"
+    verify: "人工走查（设计稿 05）"
+    done_when: "显示 +1,365.07 及成本 48.545→49.058 提示"
+    status: pending
+  - id: T31
+    phase: 4
+    title: 标的详情与搜索
+    files: [pages/instrument/]
+    depends_on: [T10, T20]
+    verify: "人工走查（设计稿 06）"
+    done_when: "Σ批次剩余==持仓份额"
+    status: pending
+  - id: T32
+    phase: 4
+    title: 统计页
+    files: [pages/stats/]
+    depends_on: [T13]
+    verify: "人工走查（设计稿 07）"
+    done_when: "四区间数字与手工累加一致"
+    status: pending
+  - id: T33
+    phase: 4
+    title: 我的/账户/费率
+    files: [pages/mine/, pages/account/]
+    depends_on: [T20]
+    verify: "人工走查（设计稿 08）"
+    done_when: "账户变更后首页刷新正确"
+    status: pending
+  - id: T34
+    phase: 4
+    title: 口径说明页
+    files: [pages/method-guide/]
+    depends_on: [T09, T17]
+    golden: "§3.2, §3.3"
+    verify: "人工走查（设计稿 09）"
+    done_when: "示例数字==100590 与 136507，且为实时计算"
+    status: pending
+  - id: T35
+    phase: 4
+    title: 隐私弹窗与 TabBar
+    files: [app.ts, app.json]
+    depends_on: [T02]
+    verify: "清缓存重启验证"
+    done_when: "拒绝授权后仍可本地记账"
+    status: pending
+  - id: T36
+    phase: 5
+    title: 数据集合与安全规则
+    files: [docs/cloud-setup.md]
+    depends_on: [T15]
+    verify: "跨用户读取被拒"
+    done_when: "5 集合 + 5 索引，user_id 首位，无 lots"
+    status: pending
+  - id: T37
+    phase: 5
+    title: 云函数四件
+    files: [cloudfunctions/exportXlsx/, cloudfunctions/recalcUser/, cloudfunctions/repairData/, cloudfunctions/dailyCleanup/]
+    depends_on: [T36]
+    verify: "recalcUser 返回值"
+    done_when: "金标准用户返回 match:true"
+    status: pending
+  - id: T38
+    phase: 6
+    title: 性能基准
+    files: [tests/perf/bench.ts]
+    depends_on: [T14]
+    verify: "npm run bench"
+    done_when: "3000 笔重放 P50 ≤10ms"
+    status: pending
+  - id: T39
+    phase: 6
+    title: 用例执行
+    files: [docs/test-report.md]
+    depends_on: [T26, T27, T28, T29, T30, T31, T32, T33, T34, T35]
+    verify: "逐条执行 21 条用例"
+    done_when: "P0 用例 100% 通过"
+    status: pending
+  - id: T40
+    phase: 6
+    title: 发布物料
+    files: [docs/release-checklist.md]
+    depends_on: [T39]
+    verify: "清单全勾选"
+    done_when: "类目为工具类，文案无投资建议措辞"
+    status: pending
+
+prohibitions:
+  - 浮点金额运算
+  - pages/components 内计算成本与盈亏
+  - 建 lots 集合
+  - 用顺序号标识批次
+  - pages 直接调 wx.cloud
+  - 存储加权单价
+  - 新增第三方依赖
+  - 修改 §2 类型定义
+
+stop_conditions:
+  - 契约与实现冲突且不改进契约写不下去
+  - 金标准夹具算不出期望值
+  - 微信平台限制导致任务不可行
+  - 不变量随机测试失败且无法判定归因

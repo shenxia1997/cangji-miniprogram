@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仓记 · 基金股票记账小程序 UI 设计稿 v1.0</title>
+<style>
+  :root{
+    --ink:#0E1C30; --ink2:#1D3654; --blue:#2F5BEA; --blue-d:#2447C4;
+    --up:#E8443A; --down:#12A45B; --gold:#C08A2E;
+    --bg:#F5F7FA; --card:#FFFFFF; --line:#EDF0F4; --line2:#E2E7EE;
+    --t1:#101828; --t2:#5A6474; --t3:#98A2B3;
+    --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:#E8ECF1; color:#101828; padding:0 0 90px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+  /* ---------- 页头 ---------- */
+  .hero{background:linear-gradient(135deg,#0B1728 0%,#16283F 55%,#1D3654 100%);color:#fff;padding:52px 0 44px;margin-bottom:40px}
+  .hero .kicker{font-size:11.5px;letter-spacing:.28em;color:#7E93B0;margin-bottom:14px}
+  .hero h1{font-size:34px;letter-spacing:-.5px;font-weight:600;line-height:1.24}
+  .hero h1 span{color:#8FA9CB;font-weight:400}
+  .hero p{margin-top:14px;font-size:14px;color:#9FB2C9;line-height:1.75;max-width:620px}
+  .hero-meta{display:flex;gap:36px;margin-top:28px;flex-wrap:wrap}
+  .hero-meta div{font-size:12px;color:#7E93B0}
+  .hero-meta b{display:block;font-size:16px;color:#fff;margin-top:5px;font-weight:500}
+
+  /* ---------- 区块标题 ---------- */
+  .sec{display:flex;align-items:baseline;gap:12px;margin:44px 0 20px}
+  .sec i{width:3px;height:15px;background:var(--blue);border-radius:2px;display:block;transform:translateY(1px)}
+  .sec h2{font-size:17px;font-weight:600;letter-spacing:.2px}
+  .sec em{font-style:normal;font-size:12.5px;color:var(--t3)}
+
+  /* ---------- 规范面板 ---------- */
+  .spec{background:#fff;border-radius:20px;padding:26px 28px;box-shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.05)}
+  .spec-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:36px}
+  .spec h3{font-size:11px;letter-spacing:.2em;color:var(--t3);margin-bottom:16px;font-weight:600}
+  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .sw{border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .sw .c{height:48px}
+  .sw .n{padding:7px 8px;font-size:10px;color:var(--t2);line-height:1.5;background:#fff}
+  .sw .n b{display:block;color:var(--t1);font-size:10.5px;font-weight:600}
+  .type-row{display:flex;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .type-row:last-child{border:0}
+  .type-row .t{flex:1}
+  .type-row .m{font-size:10.5px;color:var(--t3);width:76px;text-align:right}
+  .t-dp{font-size:30px;font-weight:600;letter-spacing:-.6px}
+  .t-h1{font-size:20px;font-weight:600}
+  .t-h2{font-size:16px;font-weight:600}
+  .t-bd{font-size:14px}
+  .t-cp{font-size:12.5px;color:var(--t2)}
+  .t-lb{font-size:10.5px;color:var(--t3);letter-spacing:.06em}
+  .comp{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+  .btn{font-size:13px;padding:9px 18px;border-radius:9px;font-weight:500}
+  .btn-p{background:var(--blue);color:#fff}
+  .btn-s{background:#F1F4F9;color:#33415C}
+  .btn-g{background:#EAF6EF;color:#0E7C45}
+  .tagpill{font-size:10px;padding:2px 6px;border-radius:4px;background:#EEF2FA;color:#45617F;font-weight:500}
+  .tagpill.f{background:#FDF0E6;color:#96601C}
+  .tagpill.lot{background:#F2F0FD;color:#4B3FA8}
+
+  /* ---------- 屏幕网格 ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,300px);gap:38px 30px}
+  @media(max-width:1060px){.grid{grid-template-columns:repeat(2,300px)}.spec-grid{grid-template-columns:1fr}}
+  @media(max-width:700px){.grid{grid-template-columns:300px}.wrap{padding:0 16px}}
+
+  .cell{width:300px}
+  .frame-wrap{width:300px;height:650px;border-radius:34px;overflow:hidden;position:relative;
+    box-shadow:0 20px 44px rgba(13,26,45,.16),0 2px 6px rgba(13,26,45,.08);background:#000}
+  .frame{width:375px;height:812px;transform:scale(.8);transform-origin:top left;background:var(--bg);
+    display:flex;flex-direction:column;overflow:hidden;position:relative}
+  .cap{margin-top:16px}
+  .cap b{font-size:13px;font-weight:600;display:block;letter-spacing:.2px}
+  .cap b i{font-style:normal;color:var(--blue);margin-right:7px;font-variant-numeric:tabular-nums}
+  .cap p{font-size:11.5px;color:#6B7787;line-height:1.7;margin-top:6px}
+
+  /* ---------- 屏幕内元素 ---------- */
+  .sb{height:44px;flex:0 0 44px;display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 22px 7px;font-size:14px;font-weight:600;color:var(--t1);position:relative;z-index:5}
+  .sb .right{display:flex;align-items:center;gap:5px}
+  .sig{display:flex;align-items:flex-end;gap:2px}
+  .sig b{width:3px;background:#101828;border-radius:1px;display:block}
+  .sig b:nth-child(1){height:4px}.sig b:nth-child(2){height:6px}
+  .sig b:nth-child(3){height:8px}.sig b:nth-child(4){height:10px}
+  .bat{width:23px;height:11.5px;border:1px solid rgba(16,24,40,.35);border-radius:3.5px;position:relative;padding:1.5px}
+  .bat i{display:block;height:100%;width:72%;background:#101828;border-radius:1.5px}
+  .bat:after{content:"";position:absolute;right:-3px;top:3.5px;width:1.6px;height:4.5px;background:rgba(16,24,40,.35);border-radius:0 1px 1px 0}
+
+  .nav{flex:0 0 46px;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+  .nav h1{font-size:20px;font-weight:600;letter-spacing:-.2px}
+  .nav .sub{font-size:11px;color:var(--t3);margin-top:2px}
+  .nav .acts{display:flex;gap:14px;align-items:center;color:#3C4A5E}
+  .content{flex:1;overflow:hidden;padding:0 16px}
+
+  /* 资产卡 */
+  .asset{background:linear-gradient(140deg,#0E1C30 0%,#1B3350 62%,#22405F 100%);border-radius:18px;
+    padding:20px 20px 16px;color:#fff;position:relative;overflow:hidden}
+  .asset:after{content:"";position:absolute;right:-46px;top:-58px;width:170px;height:170px;border-radius:50%;
+    background:radial-gradient(circle,rgba(79,124,196,.34),transparent 68%)}
+  .asset .k{font-size:11px;color:#8FA5BF;letter-spacing:.05em}
+  .asset .v{font-size:34px;font-weight:600;letter-spacing:-1px;margin:6px 0 2px;line-height:1.1}
+  .asset .v small{font-size:20px;font-weight:500;opacity:.72}
+  .asset .sub{font-size:11.5px;color:#8FA5BF;display:flex;align-items:center;gap:6px}
+  .asset .sub b{color:#F2B4AE;font-weight:500}
+  .asset .divide{height:1px;background:rgba(255,255,255,.1);margin:15px 0 12px}
+  .asset .three{display:flex;justify-content:space-between}
+  .asset .three div{font-size:10.5px;color:#8FA5BF}
+  .asset .three b{display:block;font-size:14px;color:#fff;font-weight:500;margin-top:5px;letter-spacing:-.2px}
+  .asset .three b.r{color:#FF8C82}
+  .asset .three b.g{color:#63D9A0}
+
+  /* 分段控件 */
+  .seg{display:flex;gap:4px;margin:16px 0 12px;background:#EBEFF5;border-radius:10px;padding:3px}
+  .seg span{flex:1;text-align:center;font-size:12.5px;color:var(--t2);padding:7px 0;border-radius:7px}
+  .seg span.on{background:#fff;color:var(--t1);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.1)}
+
+  /* 列表卡 */
+  .card{background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.04);overflow:hidden}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .nm{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:6px;letter-spacing:-.1px}
+  .row .mt{font-size:11px;color:var(--t3);margin-top:5px;letter-spacing:.1px}
+  .row .rt{text-align:right}
+  .row .rt .a{font-size:14.5px;font-weight:600;letter-spacing:-.2px}
+  .row .rt .b{font-size:11.5px;margin-top:4px;font-weight:500}
+  .up{color:var(--up)}.down{color:var(--down)}
+  .t-stock{font-size:9.5px;padding:1.5px 5px;border-radius:3px;background:#EEF2FA;color:#45617F;font-weight:500;letter-spacing:.02em}
+  .t-fund{font-size:9.5px;padding:1.5px 5px;border-radius:3px;background:#FDF0E6;color:#96601C;font-weight:500;letter-spacing:.02em}
+
+  .fab{position:absolute;right:16px;bottom:82px;height:44px;padding:0 18px;border-radius:22px;
+    background:linear-gradient(135deg,#3A66F5,#2447C4);color:#fff;font-size:14px;font-weight:600;
+    display:flex;align-items:center;gap:6px;box-shadow:0 8px 20px rgba(47,91,234,.36);z-index:9}
+  .fab i{font-style:normal;font-size:17px;font-weight:400;line-height:1;transform:translateY(-1px)}
+
+  .tabbar{flex:0 0 60px;height:60px;background:rgba(255,255,255,.96);border-top:1px solid var(--line);
+    display:flex;padding-bottom:6px}
+  .tabbar div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    font-size:10px;color:#9AA5B4}
+  .tabbar div.on{color:var(--blue);font-weight:600}
+  .tabbar svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  /* 记录页 */
+  .chips{display:flex;gap:7px;padding:2px 16px 11px;overflow:hidden}
+  .chips span{font-size:12px;padding:6px 12px;border-radius:14px;background:#fff;color:var(--t2);white-space:nowrap;border:1px solid var(--line2)}
+  .chips span.on{background:#0E1C30;color:#fff;border-color:#0E1C30;font-weight:500}
+  .day{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 8px}
+  .day b{font-size:11.5px;color:var(--t2);font-weight:600;letter-spacing:.02em}
+  .day small{font-size:10.5px;color:var(--t3)}
+  .tx{display:flex;gap:10px;padding:13px 14px;border-bottom:1px solid var(--line);background:#fff}
+  .tx:last-child{border-bottom:0}
+  .tx .bd{flex:0 0 26px;height:26px;border-radius:7px;font-size:12px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .tx .bd.s{background:#FDECEA;color:var(--up)}
+  .tx .bd.b{background:#E8F6EE;color:var(--down)}
+  .tx .main{flex:1;min-width:0}
+  .tx .tt{font-size:14px;font-weight:600;letter-spacing:-.1px}
+  .tx .tt small{font-size:11px;color:var(--t3);font-weight:400;margin-left:5px;letter-spacing:.2px}
+  .tx .ss{font-size:11px;color:var(--t2);margin-top:4px}
+  .tx .lot{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#4B3FA8;
+    background:#F2F0FD;padding:2px 6px;border-radius:4px;margin-top:6px;font-weight:500}
+  .tx .amt{text-align:right;padding-top:1px}
+  .tx .amt .m{font-size:14px;font-weight:600;letter-spacing:-.2px}
+  .tx .amt .p{font-size:11.5px;margin-top:5px;font-weight:500}
+
+  /* 批次选择浮层 */
+  .mask{position:absolute;inset:0;background:rgba(11,23,40,.44);backdrop-filter:blur(2px);z-index:8}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:#F7F9FC;border-radius:24px 24px 0 0;
+    padding:10px 0 0;box-shadow:0 -12px 40px rgba(11,23,40,.26);z-index:9}
+  .handle{width:38px;height:4px;background:#D5DCE6;border-radius:2px;margin:0 auto 14px}
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;padding:0 18px 12px}
+  .sheet-head h2{font-size:17px;font-weight:600;letter-spacing:-.2px}
+  .sheet-head p{font-size:10.5px;color:#98A2B3;margin-top:5px}
+  .alloc{display:flex;justify-content:space-between;align-items:center;margin:0 18px 12px;
+    padding:9px 12px;background:#EAF6EF;border-radius:9px;font-size:11px;color:#0E7C45}
+  .alloc b{font-weight:600}
+  .lot-card{background:#fff;border:1.4px solid #EDF0F4;border-radius:12px;padding:11px 12px;margin:0 18px 9px}
+  .lot-card.on{border-color:#B9C8F5;background:#FAFBFF;box-shadow:0 2px 10px rgba(47,91,234,.08)}
+  .lc-top{display:flex;align-items:center;gap:8px}
+  .chk{width:19px;height:19px;border-radius:6px;border:1.5px solid #D3DAE4;flex:0 0 19px;background:#fff;
+    display:flex;align-items:center;justify-content:center}
+  .chk.on{background:#2F5BEA;border-color:#2F5BEA}
+  .lc-i{flex:1;min-width:0}
+  .lc-t{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px;letter-spacing:-.1px;white-space:nowrap}
+  .lc-t em{font-style:normal;font-size:9px;padding:1px 5px;border-radius:3px;background:#F2F0FD;color:#4B3FA8;font-weight:500;flex:0 0 auto;white-space:nowrap}
+  .lc-s{font-size:9.5px;color:#98A2B3;margin-top:3px;letter-spacing:.1px;white-space:nowrap}
+  .step{display:flex;align-items:center;border:1px solid #E2E7EE;border-radius:7px;overflow:hidden;background:#fff;flex:0 0 auto}
+  .step span{width:22px;line-height:24px;text-align:center;font-size:13px;color:#5A6474}
+  .step b{width:36px;line-height:24px;text-align:center;font-size:12px;font-weight:600;
+    border-left:1px solid #E2E7EE;border-right:1px solid #E2E7EE}
+  .lc-f{display:flex;justify-content:space-between;font-size:9.5px;color:#98A2B3;margin-top:9px;
+    padding-top:8px;border-top:1px dashed #EDF0F4}
+  .lc-f b{font-weight:600}
+  .sheet-foot{display:flex;align-items:center;gap:12px;padding:4px 18px 26px}
+  .btn-ghost{font-size:12px;color:#2F5BEA;font-weight:500;display:flex;align-items:center;gap:4px;white-space:nowrap}
+  .btn-main{flex:1;height:44px;border-radius:11px;background:#2F5BEA;color:#fff;font-size:14.5px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(47,91,234,.28)}
+
+  /* 回执 */
+  .done-ic{width:58px;height:58px;border-radius:50%;background:#E8F6EE;display:flex;align-items:center;
+    justify-content:center;margin:30px auto 0}
+  .kv{background:#fff;border-radius:14px;width:100%;overflow:hidden;margin-top:20px}
+  .kv .r{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .kv .r:last-child{border:0}
+  .kv .r span{font-size:12.5px;color:var(--t2)}
+
+  /* 标的详情 */
+  .px-price{font-size:30px;font-weight:600;letter-spacing:-1px}
+  .px-tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#F1F4F9;color:#5A6474}
+  .stat2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:12px;overflow:hidden}
+  .stat2 div{background:#fff;padding:14px 13px}
+  .stat2 .k{font-size:10px;color:#98A2B3}
+  .stat2 .v{font-size:15px;font-weight:600;margin-top:4px;letter-spacing:-.3px}
+  .utabs{display:flex;gap:24px;padding:16px 4px 12px;font-size:13px;color:#98A2B3}
+  .utabs span.on{color:var(--t1);font-weight:600;position:relative}
+  .utabs span.on:after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-9px;
+    width:16px;height:2.5px;background:var(--blue);border-radius:2px}
+  .lotrow{display:flex;justify-content:space-between;align-items:center;padding:15px 14px;border-bottom:1px solid var(--line)}
+  .lotrow:last-child{border:0}
+  .lr-t{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .lr-t em{font-style:normal;font-size:9px;padding:1px 5px;border-radius:3px;background:#F2F0FD;color:#4B3FA8;font-weight:500}
+  .lr-t i{font-style:normal;font-size:9px;padding:1px 5px;border-radius:3px;background:#E8F6EE;color:#0E7C45}
+  .lr-s{font-size:10px;color:#98A2B3;margin-top:4px}
+  .lr-r{text-align:right}
+  .lr-r .a{font-size:13px;font-weight:600}
+  .lr-r .b{font-size:9.5px;color:#98A2B3;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">UI DESIGN SPEC · V1.0</div>
+    <h1>仓记 <span>／ 基金股票记账小程序</span></h1>
+    <p>面向做T 与长线并存的个人投资者，把「买入 → 卖出 → 指定批次 → 盈亏归因」做成一条 30 秒内可完成的路径。设计稿依据《基金股票记账小程序需求文档 V1.1》第 4 章功能需求绘制。</p>
+    <div class="hero-meta">
+      <div>画布尺寸<b>375 × 812 pt</b></div>
+      <div>页面数<b>9 屏 / 4 Tab + 3 步记一笔</b></div>
+      <div>主色<b>#2F5BEA</b></div>
+      <div>涨跌色<b>红涨 / 绿跌</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="sec"><i></i><h2>设计规范</h2><em>色板取自「深墨 + 靛蓝」，避免券商红绿满屏的观感</em></div>
+  <div class="spec">
+    <div class="spec-grid">
+      <div>
+        <h3>COLOR</h3>
+        <div class="swatches">
+          <div class="sw"><div class="c" style="background:#0E1C30"></div><div class="n"><b>墨黑</b>#0E1C30</div></div>
+          <div class="sw"><div class="c" style="background:#2F5BEA"></div><div class="n"><b>品牌蓝</b>#2F5BEA</div></div>
+          <div class="sw"><div class="c" style="background:#E8443A"></div><div class="n"><b>涨 / 盈</b>#E8443A</div></div>
+          <div class="sw"><div class="c" style="background:#12A45B"></div><div class="n"><b>跌 / 亏</b>#12A45B</div></div>
+          <div class="sw"><div class="c" style="background:#F5F7FA"></div><div class="n"><b>画布</b>#F5F7FA</div></div>
+        </div>
+        <h3 style="margin-top:24px">COMPONENT</h3>
+        <div class="comp">
+          <span class="btn btn-p">保存</span>
+          <span class="btn btn-s">取消</span>
+          <span class="btn btn-g">已清仓</span>
+          <span class="tagpill">股票</span>
+          <span class="tagpill f">基金</span>
+          <span class="tagpill lot">批次 2 · 48.20</span>
+        </div>
+      </div>
+      <div>
+        <h3>TYPE SCALE</h3>
+        <div class="type-row"><span class="t t-dp num">101,410.00</span><span class="m">Display 34 / 600</span></div>
+        <div class="type-row"><span class="t t-h1">我的持仓</span><span class="m">H1 20 / 600</span></div>
+        <div class="type-row"><span class="t t-h2">批次流水</span><span class="m">H2 16 / 600</span></div>
+        <div class="type-row"><span class="t t-bd">中国平安 601318</span><span class="m">Body 14 / 400</span></div>
+        <div class="type-row"><span class="t t-cp">500 股 @ 50.20 · 华泰证券</span><span class="m">Caption 11 / 400</span></div>
+        <div class="type-row"><span class="t t-lb">总资产（元）</span><span class="m">Label 10.5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><i></i><h2>主流程页面</h2><em>4 Tab 骨架 + 记一笔的三步闭环</em></div>
+
+  <div class="grid">
+
+    <!-- ============ 01 持仓首页 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 9.9l2.2-2.5a3.5 3.5 0 0 0-4.4 0l2.2 2.5z" fill="#101828"/><path d="M4.2 5.6a6 6 0 0 1 6.6 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/><path d="M2.3 3.1a9 9 0 0 1 10.4 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <div class="nav">
+          <div>
+            <h1>我的持仓</h1>
+            <div class="sub">3 个标的 · 2 个账户</div>
+          </div>
+          <div class="acts">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="1.7" stroke-linecap="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="asset">
+            <div class="k">总资产（元）</div>
+            <div class="v num">101,410<small>.00</small></div>
+            <div class="sub num">浮动盈亏 <b>+2,056.00</b> <span style="opacity:.5">·</span> 收益率 <b>+2.07%</b></div>
+            <div class="divide"></div>
+            <div class="three num">
+              <div>持仓成本<b>99,354.00</b></div>
+              <div>累计已实现<b class="r">+1,842.50</b></div>
+              <div>本月<b class="r">+604.00</b></div>
+            </div>
+          </div>
+
+          <div class="seg"><span class="on">全部</span><span>股票</span><span>基金</span></div>
+
+          <div class="card">
+            <div class="row">
+              <div>
+                <div class="nm">中国平安 <span class="t-stock">股票</span></div>
+                <div class="mt num">601318 · 1,000 股 · 成本 48.53</div>
+              </div>
+              <div class="rt">
+                <div class="a num">49,300.00</div>
+                <div class="b up num">+770.00 +1.59%</div>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <div class="nm">沪深300ETF <span class="t-fund">基金</span></div>
+                <div class="mt num">510300 · 8,000 份 · 成本 4.128</div>
+              </div>
+              <div class="rt">
+                <div class="a num">33,960.00</div>
+                <div class="b up num">+936.00 +2.83%</div>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <div class="nm">招商银行 <span class="t-stock">股票</span></div>
+                <div class="mt num">600036 · 500 股 · 成本 35.60</div>
+              </div>
+              <div class="rt">
+                <div class="a num">18,150.00</div>
+                <div class="b up num">+350.00 +1.97%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 4px 0">
+            <span style="font-size:11.5px;font-weight:600;color:#5A6474">手动价更新</span>
+            <span style="font-size:10.5px;color:#98A2B3">10-30 09:35 · 点此更新</span>
+          </div>
+        </div>
+
+        <div class="fab"><i>+</i> 记一笔</div>
+        <div class="tabbar">
+          <div class="on"><svg><use href="#i-pos"/></svg>持仓</div>
+          <div><svg><use href="#i-rec"/></svg>记录</div>
+          <div><svg><use href="#i-stat"/></svg>统计</div>
+          <div><svg><use href="#i-me"/></svg>我的</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>01</i>持仓首页</b>
+        <p>资产卡用深墨渐变承接「总资产 + 浮动盈亏 + 已实现」三层信息，红涨绿跌。列表行固定三段式：标的与成本 / 市值 / 盈亏与收益率，扫读时视线只走一条竖线。</p></div>
+    </div>
+
+    <!-- ============ 02 交易记录 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 9.9l2.2-2.5a3.5 3.5 0 0 0-4.4 0l2.2 2.5z" fill="#101828"/><path d="M4.2 5.6a6 6 0 0 1 6.6 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/><path d="M2.3 3.1a9 9 0 0 1 10.4 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <div class="nav">
+          <h1>交易记录</h1>
+          <div class="acts">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+        </div>
+
+        <div class="chips">
+          <span class="on">全部</span><span>买入</span><span>卖出</span><span>本月</span><span>华泰证券</span>
+        </div>
+
+        <div class="content" style="padding:0 16px">
+          <div class="day"><b>10 月 30 日 周四</b><small>2 笔 · 净卖出 16,624.00</small></div>
+          <div class="card">
+            <div class="tx">
+              <div class="bd s">卖</div>
+              <div class="main">
+                <div class="tt">中国平安<small>601318</small></div>
+                <div class="ss num">10:14 · 500 股 @ 50.20 · 华泰证券</div>
+                <div class="lot">◈ 批次 2 · 买入价 48.20</div>
+              </div>
+              <div class="amt">
+                <div class="m num">25,100.00</div>
+                <div class="p up num">+969.40</div>
+              </div>
+            </div>
+            <div class="tx">
+              <div class="bd b">买</div>
+              <div class="main">
+                <div class="tt">沪深300ETF<small>510300</small></div>
+                <div class="ss num">14:02 · 2,000 份 @ 4.238 · 华泰证券</div>
+              </div>
+              <div class="amt">
+                <div class="m num">−8,476.00</div>
+                <div class="p" style="color:#98A2B3">自动结转</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="day"><b>10 月 24 日 周四</b><small>1 笔 · 买入 14,070.00</small></div>
+          <div class="card">
+            <div class="tx">
+              <div class="bd b">买</div>
+              <div class="main">
+                <div class="tt">中国平安<small>601318</small></div>
+                <div class="ss num">09:48 · 300 股 @ 46.90 · 华泰证券</div>
+                <div class="lot">◈ 批次 3 · 剩余 300 股</div>
+              </div>
+              <div class="amt">
+                <div class="m num">−14,070.00</div>
+                <div class="p" style="color:#98A2B3">建仓</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="day"><b>10 月 12 日 周一</b><small>1 笔</small></div>
+          <div class="card">
+            <div class="tx">
+              <div class="bd s">卖</div>
+              <div class="main">
+                <div class="tt">招商银行<small>600036</small></div>
+                <div class="ss num">13:22 · 200 股 @ 36.90 · 支付宝基金</div>
+                <div class="lot">◈ 自动 · 加权平均</div>
+              </div>
+              <div class="amt">
+                <div class="m num">7,380.00</div>
+                <div class="p up num">+269.10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabbar">
+          <div><svg><use href="#i-pos"/></svg>持仓</div>
+          <div class="on"><svg><use href="#i-rec"/></svg>记录</div>
+          <div><svg><use href="#i-stat"/></svg>统计</div>
+          <div><svg><use href="#i-me"/></svg>我的</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>02</i>交易流水</b>
+        <p>按日分组，左侧红「卖」绿「买」色块让人在滚动中就能定位方向。每笔卖出下方挂批次标记（需求 4.2.5 与统计联动），未指定批次的显示"自动 · 加权平均"，不隐藏口径。</p></div>
+    </div>
+
+    <!-- ============ 03 新增卖出 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 9.9l2.2-2.5a3.5 3.5 0 0 0-4.4 0l2.2 2.5z" fill="#101828"/><path d="M4.2 5.6a6 6 0 0 1 6.6 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/><path d="M2.3 3.1a9 9 0 0 1 10.4 0" stroke="#101828" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <div class="nav" style="flex:0 0 44px;height:44px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          <span style="font-size:15px;font-weight:600">记一笔</span>
+          <span style="font-size:13px;color:#2F5BEA;font-weight:500">草稿</span>
+        </div>
+
+        <div class="content" style="padding:8px 16px 0">
+          <div class="seg" style="margin-top:4px"><span>买入</span><span class="on">卖出</span></div>
+
+          <div class="card" style="margin-top:12px">
+            <div class="row" style="padding:14px">
+              <div>
+                <div class="nm">中国平安 <span class="t-stock">股票</span></div>
+                <div class="mt num">601318 · 可卖 1,000 股</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px;padding:16px 14px">
+            <div style="font-size:10.5px;color:#98A2B3;letter-spacing:.06em">成交价格</div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:6px">
+              <div class="num" style="font-size:32px;font-weight:600;letter-spacing:-1px">50.20</div>
+              <span style="font-size:11px;color:#12A45B;font-weight:500">较成本 +3.44%</span>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px">
+            <div class="row" style="padding:12px 14px">
+              <span style="font-size:13.5px;color:#5A6474">成交数量</span>
+              <span class="num" style="font-size:15px;font-weight:600">500 股</span>
+            </div>
+            <div class="row" style="padding:12px 14px">
+              <span style="font-size:13.5px;color:#5A6474">成交时间</span>
+              <span class="num" style="font-size:13.5px;color:#101828">2026-10-30 10:14</span>
+            </div>
+            <div class="row" style="padding:12px 14px;align-items:flex-start">
+              <span style="font-size:13.5px;color:#5A6474">卖出费用</span>
+              <div style="text-align:right">
+                <div class="num" style="font-size:13.5px;color:#101828">30.60</div>
+                <div style="font-size:9.5px;color:#98A2B3;margin-top:4px">佣金 5.00 · 印花税 25.10 · 过户费 0.50</div>
+              </div>
+            </div>
+            <div class="row" style="padding:12px 14px">
+              <span style="font-size:13.5px;color:#5A6474">账户</span>
+              <span style="font-size:13.5px">华泰证券</span>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px;padding:13px 14px;border:1.5px solid #D8DEF8;background:#FBFCFF">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:13.5px;font-weight:600">批次归属</span>
+                <span class="tagpill lot">指定批次</span>
+              </div>
+              <span style="display:flex;align-items:center;gap:3px;font-size:12.5px;color:#2F5BEA;font-weight:500">
+                批次 2 · 48.20
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+              </span>
+            </div>
+            <div style="font-size:10.5px;color:#98A2B3;margin-top:7px;line-height:1.5">默认按加权平均结转，点此指定卖出哪一批 · 影响本笔盈亏</div>
+          </div>
+        </div>
+
+        <div style="padding:10px 16px 0">
+          <div style="background:#0E1C30;border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:10.5px;color:#8FA5BF">本笔预计盈亏 · 指定批次</div>
+              <div class="num" style="font-size:24px;font-weight:600;color:#FF8C82;letter-spacing:-.6px;margin-top:3px">+969.40</div>
+            </div>
+            <div style="text-align:right;font-size:10.5px;color:#8FA5BF;line-height:1.7">成本 24,100.00<br>收益率 +4.02%</div>
+          </div>
+        </div>
+
+        <div style="padding:12px 16px 22px">
+          <div style="height:46px;border-radius:12px;background:#2F5BEA;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(47,91,234,.3)">保存</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>03</i>新增卖出（手动录入）</b>
+        <p>价格给到 32pt 大字号，是整页视觉重心——记账时最怕录错价。批次归属用浅蓝描边卡片框住并前置结果，底部深色条实时预演盈亏，做到"输入即见结果"，不必先存后看。</p></div>
+    </div>
+
+    <!-- ============ 04 批次选择浮层 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame" style="background:#F5F7FA">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <!-- 背景：被遮罩的录入页 -->
+        <div style="padding:0 16px;opacity:.9">
+          <div style="height:34px;border-radius:10px;background:#EBEFF5;margin-top:4px"></div>
+          <div style="background:#fff;border-radius:14px;padding:14px;margin-top:12px">
+            <div style="font-size:14.5px;font-weight:600">中国平安</div>
+            <div style="font-size:11px;color:#98A2B3;margin-top:5px">601318 · 可卖 1,000 股</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:16px 14px;margin-top:10px">
+            <div style="font-size:10.5px;color:#98A2B3">成交价格</div>
+            <div class="num" style="font-size:32px;font-weight:600;letter-spacing:-1px;margin-top:6px">50.20</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;margin-top:10px;height:44px"></div>
+          <div style="background:#fff;border-radius:14px;margin-top:10px;height:44px"></div>
+        </div>
+
+        <div class="mask"></div>
+
+        <div class="sheet">
+          <div class="handle"></div>
+          <div class="sheet-head">
+            <div>
+              <h2>选择卖出批次</h2>
+              <p>中国平安 601318 · 可卖合计 1,000 股，共 3 个批次</p>
+            </div>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+
+          <div class="alloc">
+            <span>本笔卖出 <b>500 股</b>，已分配完毕</span>
+            <span class="num"><b>500 / 500</b> ✓</span>
+          </div>
+
+          <div class="lot-card on">
+            <div class="lc-top">
+              <span class="chk on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>
+              <div class="lc-i">
+                <div class="lc-t">批次 2 <em>10-08 买入</em></div>
+                <div class="lc-s num">500 股 @ 48.20 · 剩余 500 股</div>
+              </div>
+              <div class="step"><span>−</span><b class="num">500</b><span>+</span></div>
+            </div>
+            <div class="lc-f">
+              <span>批次浮盈 <b class="up num">+550.00</b></span>
+              <span class="num">占用成本 24,100.00</span>
+            </div>
+          </div>
+
+          <div class="lot-card">
+            <div class="lc-top">
+              <span class="chk"></span>
+              <div class="lc-i">
+                <div class="lc-t">批次 1 <em>09-12 买入</em></div>
+                <div class="lc-s num">200 股 @ 51.80 · 剩余 200 股</div>
+              </div>
+              <div class="step" style="opacity:.45"><span>−</span><b class="num" style="color:#98A2B3">0</b><span>+</span></div>
+            </div>
+            <div class="lc-f">
+              <span>批次浮亏 <b class="down num">−500.00</b></span>
+              <span class="num">可卖上限 200 股</span>
+            </div>
+          </div>
+
+          <div class="lot-card">
+            <div class="lc-top">
+              <span class="chk"></span>
+              <div class="lc-i">
+                <div class="lc-t">批次 3 <em>10-24 买入</em></div>
+                <div class="lc-s num">300 股 @ 46.90 · 剩余 300 股</div>
+              </div>
+              <div class="step" style="opacity:.45"><span>−</span><b class="num" style="color:#98A2B3">0</b><span>+</span></div>
+            </div>
+            <div class="lc-f">
+              <span>批次浮盈 <b class="up num">+720.00</b></span>
+              <span class="num">可卖上限 300 股</span>
+            </div>
+          </div>
+
+          <div class="sheet-foot">
+            <div class="btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2F5BEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11l-3-3M20 17H9l3 3"/></svg>
+              先进先出填充
+            </div>
+            <div class="btn-main">确定 · 预计 <span class="num" style="margin-left:3px">+969.40</span></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>04</i>批次选择半屏浮层（核心）</b>
+        <p>顶部先交代"可卖 1,000 股 / 共 3 个批次"，避免用户在列表里自己加。每个批次显示买入价、剩余量与该批次浮盈（按最新价算），勾选后即锁定成本。数量支持拆分，底部"先进先出填充"是给懒得算的人的兜底。</p></div>
+    </div>
+
+    <!-- ============ 05 保存回执 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame" style="background:#F5F7FA">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+        <div class="nav" style="flex:0 0 44px;height:44px;justify-content:flex-end">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A6474" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </div>
+
+        <div style="padding:0 20px;flex:1;display:flex;flex-direction:column">
+          <div class="done-ic">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#12A45B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.4 4.4L19 7"/></svg>
+          </div>
+          <div style="text-align:center;margin-top:16px">
+            <div style="font-size:21px;font-weight:600;letter-spacing:-.3px">已记录卖出</div>
+            <div style="font-size:12px;color:#98A2B3;margin-top:7px">中国平安 601318 · 500 股 @ 50.20</div>
+          </div>
+
+          <div style="background:#fff;border-radius:14px;margin-top:20px;padding:18px;text-align:center">
+            <div style="font-size:10.5px;color:#98A2B3;letter-spacing:.06em">本笔已实现盈亏</div>
+            <div class="num" style="font-size:36px;font-weight:600;color:#E8443A;letter-spacing:-1.2px;margin-top:6px">+969.40</div>
+            <div class="num" style="font-size:11px;color:#5A6474;margin-top:6px">收益率 +4.02% · 持有 22 天</div>
+          </div>
+
+          <div class="kv">
+            <div class="r"><span>归属批次</span><span style="font-weight:600;color:#4B3FA8">批次 2 · 买入价 48.20</span></div>
+            <div class="r"><span>该批次剩余</span><span class="num" style="font-weight:600">0 股 · 已清仓</span></div>
+            <div class="r"><span>剩余持仓成本</span><span class="num" style="font-weight:600">51.80 / 股</span></div>
+          </div>
+
+          <div style="background:#fff;border-radius:14px;margin-top:10px;padding:14px 15px">
+            <div style="font-size:10px;color:#98A2B3;letter-spacing:.06em;margin-bottom:11px">持仓变化</div>
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:9px">
+              <span style="color:#5A6474">卖出前</span><span class="num" style="color:#5A6474">1,000 股 · 成本 48.53</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11.5px">
+              <span style="color:#5A6474">卖出后</span><span class="num" style="font-weight:600">500 股 · 成本 51.80</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;background:#FFF8EC;border:1px solid #F6E4C4;border-radius:10px;padding:11px 12px;margin-top:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C08A2E" stroke-width="2" stroke-linecap="round" style="flex:0 0 15px;margin-top:1px"><circle cx="12" cy="12" r="9.5"/><path d="M12 8v5M12 16.2v.1"/></svg>
+            <div style="font-size:10.5px;color:#8A6520;line-height:1.65">
+              卖掉低成本批次后，剩余持仓加权成本上升至 51.80，与券商展示口径可能不同。
+              <span style="color:#2F5BEA;font-weight:600">查看说明</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:14px 20px 26px;display:flex;gap:10px">
+          <div style="flex:1;height:44px;border-radius:11px;background:#fff;border:1px solid #D9E0EA;color:#33415C;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.06)">再记一笔</div>
+          <div style="flex:1.2;height:44px;border-radius:11px;background:#2F5BEA;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center">查看持仓</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>05</i>保存成功回执</b>
+        <p>需求要求回执必须给三件事：本笔盈亏、归属哪个批次、该批次还剩多少。这里把盈亏做成整页最大数字，并把"剩余成本变了"的副作用前置到回执页，而不是藏在帮助文档里——这是最容易被用户质疑的点。</p></div>
+    </div>
+
+    <!-- ============ 06 标的详情·批次流水 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+        <div class="nav" style="flex:0 0 44px;height:44px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+          <span style="font-size:15px;font-weight:600">中国平安</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h.01M12 12h.01M18 12h.01"/></svg>
+        </div>
+
+        <div class="content" style="padding:2px 16px 0">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <div>
+              <div class="px-price num">49.30</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:7px">
+                <span class="px-tag">手动价</span>
+                <span style="font-size:10px;color:#98A2B3">10-30 09:35 更新</span>
+              </div>
+            </div>
+            <span class="t-stock" style="font-size:10px;padding:2px 7px">股票 · 沪市</span>
+          </div>
+
+          <div class="stat2" style="margin-top:14px">
+            <div><div class="k">持仓份额</div><div class="v num">1,000 股</div></div>
+            <div><div class="k">持仓成本</div><div class="v num">48.53</div></div>
+            <div><div class="k">持仓市值</div><div class="v num">49,300.00</div></div>
+            <div><div class="k">浮动盈亏</div><div class="v num up">+770.00</div></div>
+          </div>
+
+          <div class="utabs"><span class="on">批次流水</span><span>交易记录</span><span>做T 配对</span></div>
+
+          <div class="card">
+            <div class="lotrow">
+              <div>
+                <div class="lr-t">批次 1 <em>09-12</em> <i>持有中</i></div>
+                <div class="lr-s num">200 股 @ 51.80 · 已卖 0 股</div>
+              </div>
+              <div class="lr-r">
+                <div class="a down num">−500.00</div>
+                <div class="b num">剩余 200 股</div>
+              </div>
+            </div>
+            <div class="lotrow">
+              <div>
+                <div class="lr-t">批次 2 <em>10-08</em> <i>持有中</i></div>
+                <div class="lr-s num">500 股 @ 48.20 · 已卖 0 股</div>
+              </div>
+              <div class="lr-r">
+                <div class="a up num">+550.00</div>
+                <div class="b num">剩余 500 股</div>
+              </div>
+            </div>
+            <div class="lotrow">
+              <div>
+                <div class="lr-t">批次 3 <em>10-24</em> <i>持有中</i></div>
+                <div class="lr-s num">300 股 @ 46.90 · 已卖 0 股</div>
+              </div>
+              <div class="lr-r">
+                <div class="a up num">+720.00</div>
+                <div class="b num">剩余 300 股</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;padding:14px 4px 0">
+            <span style="font-size:10.5px;color:#98A2B3">3 个批次合计 1,000 股 · 加权成本 48.53</span>
+            <span style="font-size:10.5px;color:#2F5BEA;font-weight:500">成本待补 0</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;border:1px dashed #DCE3ED;border-radius:12px;padding:12px 13px;margin-top:14px;background:#FAFBFC">
+            <div style="width:30px;height:30px;border-radius:9px;background:#F1F4F9;display:flex;align-items:center;justify-content:center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C8AA0" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h11l-2.6-2.6M20 16H9l2.6 2.6"/></svg>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;color:#5A6474">做T 配对复盘</div>
+              <div style="font-size:9.5px;color:#A9B2BF;margin-top:3px">买卖配对 · 持有天数 · 单笔收益率</div>
+            </div>
+            <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#F1F4F9;color:#98A2B3">V1.1</span>
+          </div>
+        </div>
+
+        <div style="height:16px;flex:0 0 16px"></div>
+      </div></div>
+      <div class="cap"><b><i>06</i>标的详情 · 批次流水</b>
+        <p>批次流水是这款产品的"证据链"：每一手买入的剩余量、已卖量、浮动盈亏都能追溯。"做T 配对"Tab 对应需求里 P1 的买卖配对视图，V1.0 先置灰占位，把扩展位留出来。</p></div>
+    </div>
+
+    <!-- ============ 07 统计 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <div class="nav">
+          <div><h1>统计</h1><div class="sub">2026 年 10 月 · 12 笔交易</div></div>
+          <div class="acts">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="chips" style="padding-left:0;padding-right:0">
+            <span class="on">本月</span><span>本季</span><span>本年</span><span>自定义</span>
+          </div>
+
+          <div class="asset" style="padding:17px 18px 15px">
+            <div class="k">区间已实现盈亏（元）</div>
+            <div class="v num" style="font-size:31px;margin:5px 0 2px">+1,842<small>.50</small></div>
+            <div class="sub num">较上月 <b>+604.00</b> · 共 3 笔卖出</div>
+            <div class="divide" style="margin:13px 0 11px"></div>
+            <div class="three num">
+              <div>买入总额<b>42,300.00</b></div>
+              <div>卖出总额<b>25,100.00</b></div>
+              <div>费用合计<b>186.40</b></div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin:18px 4px 10px">
+            <span style="font-size:13px;font-weight:600">标的盈亏排行</span>
+            <span style="font-size:10.5px;color:#98A2B3">按已实现盈亏</span>
+          </div>
+
+          <div class="card" style="padding:15px 14px 6px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+              <span style="width:64px;font-size:11.5px;font-weight:600">中国平安</span>
+              <div style="flex:1;height:7px;background:#F1F3F7;border-radius:4px;overflow:hidden">
+                <div style="width:100%;height:100%;background:linear-gradient(90deg,#F08076,#E8443A);border-radius:4px"></div>
+              </div>
+              <span class="num" style="font-size:12px;font-weight:600;color:#E8443A;width:62px;text-align:right">+969.40</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+              <span style="width:64px;font-size:11.5px;font-weight:600">300ETF</span>
+              <div style="flex:1;height:7px;background:#F1F3F7;border-radius:4px;overflow:hidden">
+                <div style="width:62%;height:100%;background:linear-gradient(90deg,#F5A79F,#E8443A);border-radius:4px"></div>
+              </div>
+              <span class="num" style="font-size:12px;font-weight:600;color:#E8443A;width:62px;text-align:right">+604.00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+              <span style="width:64px;font-size:11.5px;font-weight:600">招商银行</span>
+              <div style="flex:1;height:7px;background:#F1F3F7;border-radius:4px;overflow:hidden">
+                <div style="width:28%;height:100%;background:linear-gradient(90deg,#F5C4BE,#E8443A);border-radius:4px"></div>
+              </div>
+              <span class="num" style="font-size:12px;font-weight:600;color:#E8443A;width:62px;text-align:right">+269.10</span>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px;display:flex;padding:13px 0">
+            <div style="flex:1;text-align:center">
+              <div style="font-size:10px;color:#98A2B3">交易笔数</div>
+              <div class="num" style="font-size:16px;font-weight:600;margin-top:4px">12</div>
+            </div>
+            <div style="width:1px;background:#EDF0F4"></div>
+            <div style="flex:1;text-align:center">
+              <div style="font-size:10px;color:#98A2B3">涉及标的</div>
+              <div class="num" style="font-size:16px;font-weight:600;margin-top:4px">4</div>
+            </div>
+            <div style="width:1px;background:#EDF0F4"></div>
+            <div style="flex:1;text-align:center">
+              <div style="font-size:10px;color:#98A2B3">平均持有</div>
+              <div class="num" style="font-size:16px;font-weight:600;margin-top:4px">18 天</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px;padding:14px 14px 12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+              <span style="font-size:12px;font-weight:600">费用构成</span>
+              <span style="font-size:9.5px;color:#98A2B3">占卖出额 0.74%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+              <span style="width:48px;font-size:10.5px;color:#5A6474">佣金</span>
+              <div style="flex:1;height:5px;background:#F1F3F7;border-radius:3px;overflow:hidden">
+                <div style="width:100%;height:100%;background:#B9C6DA;border-radius:3px"></div>
+              </div>
+              <span class="num" style="font-size:11px;color:#3C4A5E;width:52px;text-align:right">96.40</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+              <span style="width:48px;font-size:10.5px;color:#5A6474">印花税</span>
+              <div style="flex:1;height:5px;background:#F1F3F7;border-radius:3px;overflow:hidden">
+                <div style="width:78%;height:100%;background:#CBD5E4;border-radius:3px"></div>
+              </div>
+              <span class="num" style="font-size:11px;color:#3C4A5E;width:52px;text-align:right">75.00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="width:48px;font-size:10.5px;color:#5A6474">过户费</span>
+              <div style="flex:1;height:5px;background:#F1F3F7;border-radius:3px;overflow:hidden">
+                <div style="width:16%;height:100%;background:#DCE3ED;border-radius:3px"></div>
+              </div>
+              <span class="num" style="font-size:11px;color:#3C4A5E;width:52px;text-align:right">15.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabbar">
+          <div><svg><use href="#i-pos"/></svg>持仓</div>
+          <div><svg><use href="#i-rec"/></svg>记录</div>
+          <div class="on"><svg><use href="#i-stat"/></svg>统计</div>
+          <div><svg><use href="#i-me"/></svg>我的</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>07</i>统计分析</b>
+        <p>V1.0 不引入图表库，用「大数字 + 比例条」表达排行，加载零成本。区间选择用胶囊而非日历控件，因为记账场景 90% 的查看是"这个月赚了多少"。</p></div>
+    </div>
+
+    <!-- ============ 08 我的 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+
+        <div class="nav"><h1>我的</h1></div>
+
+        <div class="content">
+          <div style="display:flex;align-items:center;gap:13px;background:#fff;border-radius:14px;padding:16px 15px">
+            <div style="width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,#1D3654,#0E1C30);
+              color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600">投</div>
+            <div style="flex:1">
+              <div style="font-size:16px;font-weight:600">老周的投资笔记</div>
+              <div style="display:flex;align-items:center;gap:5px;margin-top:6px">
+                <span style="width:5px;height:5px;border-radius:50%;background:#12A45B"></span>
+                <span style="font-size:10.5px;color:#98A2B3">已同步 · 12 分钟前</span>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <div class="row" style="padding:13px 15px">
+              <div style="display:flex;align-items:center;gap:11px">
+                <div style="width:30px;height:30px;border-radius:9px;background:#EEF2FA;display:flex;align-items:center;justify-content:center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#45617F" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2.4"/><path d="M3 10h18"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:500">账户管理</div>
+                  <div style="font-size:10px;color:#98A2B3;margin-top:3px">华泰证券、支付宝基金等 3 个</div>
+                </div>
+              </div>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+            <div class="row" style="padding:13px 15px">
+              <div style="display:flex;align-items:center;gap:11px">
+                <div style="width:30px;height:30px;border-radius:9px;background:#FDF0E6;display:flex;align-items:center;justify-content:center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#96601C" stroke-width="1.8" stroke-linecap="round"><path d="M5 19V7.5A2.5 2.5 0 0 1 7.5 5H19v14H7.5A2.5 2.5 0 0 1 5 16.5z"/><path d="M9 9h6"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:500">费率模板</div>
+                  <div style="font-size:10px;color:#98A2B3;margin-top:3px">佣金万 2.5 · 自动预估费用</div>
+                </div>
+              </div>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+            <div class="row" style="padding:13px 15px;background:#FCFCFF">
+              <div style="display:flex;align-items:center;gap:11px">
+                <div style="width:30px;height:30px;border-radius:9px;background:#F2F0FD;display:flex;align-items:center;justify-content:center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B3FA8" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.1"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:6px">计算口径说明
+                    <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#E8443A;color:#fff;font-weight:500">必读</span>
+                  </div>
+                  <div style="font-size:10px;color:#98A2B3;margin-top:3px">加权平均 / 指定批次，影响所有盈亏数字</div>
+                </div>
+              </div>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px">
+            <div class="row" style="padding:13px 15px">
+              <span style="font-size:13.5px">数据导出 Excel</span>
+              <span style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#F1F4F9;color:#98A2B3">V1.1</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+              </span>
+            </div>
+            <div class="row" style="padding:13px 15px">
+              <span style="font-size:13.5px">回收站</span>
+              <span style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:10.5px;color:#98A2B3">2 条 · 保留 30 天</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+              </span>
+            </div>
+            <div class="row" style="padding:13px 15px">
+              <span style="font-size:13.5px">隐私与协议</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C4CCD8" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+
+          <p style="font-size:9.5px;color:#A9B2BF;line-height:1.8;padding:16px 6px 0;text-align:center">
+            本工具仅用于个人交易记账，不提供行情推荐与投资建议<br>行情数据仅供参考，投资决策请以券商与基金公司披露为准
+          </p>
+        </div>
+
+        <div class="tabbar">
+          <div><svg><use href="#i-pos"/></svg>持仓</div>
+          <div><svg><use href="#i-rec"/></svg>记录</div>
+          <div><svg><use href="#i-stat"/></svg>统计</div>
+          <div class="on"><svg><use href="#i-me"/></svg>我的</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>08</i>我的 / 设置</b>
+        <p>「计算口径说明」被提到主菜单第三位并标红"必读"——它决定了所有盈亏数字，不能埋在设置深处。底部合规声明对应需求第 5 章：不提供投资建议，行情仅供参考。</p></div>
+    </div>
+
+    <!-- ============ 09 口径说明 ============ -->
+    <div class="cell">
+      <div class="frame-wrap"><div class="frame">
+        <div class="sb"><span>9:41</span><span class="right">
+          <i class="sig"><b></b><b></b><b></b><b></b></i>
+          <i class="bat"><i></i></i>
+        </span></div>
+        <div class="nav" style="flex:0 0 44px;height:44px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C4A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+          <span style="font-size:15px;font-weight:600">计算口径说明</span>
+          <span style="width:20px"></span>
+        </div>
+
+        <div class="content" style="padding:4px 16px 0">
+          <p style="font-size:11.5px;color:#5A6474;line-height:1.75">
+            同一笔卖出，用不同成本结转方法算出的盈亏可能差很多。本产品两种都支持，逐笔可选，但<strong style="color:#101828">同一时刻只保留一套结果</strong>。
+          </p>
+
+          <div class="card" style="margin-top:14px;padding:15px;border:1.5px solid #D8DEF8;background:#FBFCFF">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:600">加权平均法</span>
+              <span style="font-size:9px;padding:1.5px 6px;border-radius:3px;background:#EAF6EF;color:#0E7C45;font-weight:500">当前默认</span>
+            </div>
+            <p style="font-size:10.5px;color:#5A6474;line-height:1.75">
+              卖出结转成本 = 卖出份额 × 当前加权成本。与多数券商 App 展示口径一致，适合长线持有。
+            </p>
+          </div>
+
+          <div class="card" style="margin-top:10px;padding:15px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:600">指定批次法</span>
+              <span style="font-size:9px;padding:1.5px 6px;border-radius:3px;background:#F2F0FD;color:#4B3FA8;font-weight:500">做T 用</span>
+            </div>
+            <p style="font-size:10.5px;color:#5A6474;line-height:1.75">
+              卖出时指定消耗哪一批买入，按该批买入价计算成本，能看出哪一手真正赚钱。
+            </p>
+          </div>
+
+          <div style="font-size:11.5px;font-weight:600;margin:18px 4px 9px">同一笔卖出的两种结果</div>
+
+          <div class="card">
+            <div style="display:flex;background:#F7F9FC;padding:9px 14px;font-size:10px;color:#98A2B3">
+              <span style="flex:1">场景：买入 3 批共 1,000 股，卖出 500 股 @ 50.20</span>
+            </div>
+            <div style="display:flex;padding:12px 14px;border-bottom:1px solid #EDF0F4;align-items:center">
+              <div style="flex:1">
+                <div style="font-size:11.5px;font-weight:500">加权平均</div>
+                <div style="font-size:9.5px;color:#98A2B3;margin-top:3px">成本 48.53</div>
+              </div>
+              <span class="num up" style="font-size:14px;font-weight:600">+804.40</span>
+            </div>
+            <div style="display:flex;padding:12px 14px;align-items:center">
+              <div style="flex:1">
+                <div style="font-size:11.5px;font-weight:500">指定批次 2</div>
+                <div style="font-size:9.5px;color:#98A2B3;margin-top:3px">成本 48.20</div>
+              </div>
+              <span class="num up" style="font-size:14px;font-weight:600">+969.40</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;background:#FFF8EC;border:1px solid #F6E4C4;border-radius:10px;padding:11px 12px;margin-top:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C08A2E" stroke-width="2" stroke-linecap="round" style="flex:0 0 15px;margin-top:1px"><circle cx="12" cy="12" r="9.5"/><path d="M12 8v5M12 16.2v.1"/></svg>
+            <div style="font-size:10px;color:#8A6520;line-height:1.7">
+              切换口径会重算全部历史记录，已记录的结果不会保留两套。
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:10px 16px 26px">
+          <div style="height:44px;border-radius:11px;background:#fff;border:1px solid #D5DCE6;color:#33415C;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(16,24,40,.06)">切换为默认口径：指定批次法</div>
+        </div>
+      </div></div>
+      <div class="cap"><b><i>09</i>计算口径说明</b>
+        <p>用同一笔卖出的两个结果做对照（+804.40 与 +969.40），比讲公式有效得多。切换按钮写明"会重算全部历史"，把不可逆的代价说在动作之前，而不是点了之后弹警告。</p></div>
+    </div>
+
+  </div>
+
+  <div class="sec"><i></i><h2>核心路径与状态</h2><em>设计稿背后的交互决策</em></div>
+
+  <div class="spec" style="padding:26px 28px 28px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px">
+      <span style="font-size:11px;padding:8px 14px;border-radius:9px;background:#0E1C30;color:#fff;font-weight:500">首页 · 点「记一笔」</span>
+      <span style="color:#C4CCD8">→</span>
+      <span style="font-size:11px;padding:8px 14px;border-radius:9px;background:#F1F4F9;color:#33415C">选买入 / 卖出</span>
+      <span style="color:#C4CCD8">→</span>
+      <span style="font-size:11px;padding:8px 14px;border-radius:9px;background:#F1F4F9;color:#33415C">价格 · 数量 · 费用</span>
+      <span style="color:#C4CCD8">→</span>
+      <span style="font-size:11px;padding:8px 14px;border-radius:9px;background:#F2F0FD;color:#4B3FA8;font-weight:500">批次归属（仅卖出）</span>
+      <span style="color:#C4CCD8">→</span>
+      <span style="font-size:11px;padding:8px 14px;border-radius:9px;background:#EAF6EF;color:#0E7C45;font-weight:500">保存回执</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px">
+      <div>
+        <h3 style="font-size:11px;letter-spacing:.2em;color:#98A2B3;font-weight:600;margin-bottom:14px">REQUIRED STATES</h3>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">01</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">批次分配不足：底部按钮置灰并显示「还差 100 股」，只给「先进先出补齐 / 改自动分配」两个出口，不让用户自己算。</p>
+        </div>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">02</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">单批次超卖：步进器上限锁死为该批次剩余量，无法输入超量，从源头消除校验弹窗。</p>
+        </div>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">03</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">成本待补：升级迁移来的老批次缺买入价时，批次卡挂黄色「成本待补」角标，暂以加权成本代替，可点进去补录。</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:11px;letter-spacing:.2em;color:#98A2B3;font-weight:600;margin-bottom:14px">&nbsp;</h3>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">04</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">编辑 / 删除卖出：批次剩余量按交易记录重放重算，不做增量回退，删一笔即自动恢复，不会留脏数据。</p>
+        </div>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">05</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">首次空状态：无持仓时资产卡显示 0.00，列表位替换为「记第一笔」引导，不显示空卡片。</p>
+        </div>
+        <div style="display:flex;gap:11px;margin-bottom:13px">
+          <b style="font-size:10px;color:#2F5BEA;font-weight:700;flex:0 0 14px;line-height:1.6">06</b>
+          <p style="font-size:11.5px;color:#3C4A5E;line-height:1.72">未登录：顶部一条 28pt 细提示「本地记录中，登录后自动合并」，不阻断录入。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:10.5px;color:#98A2B3;margin-top:28px;text-align:center;line-height:1.9">
+    仓记 UI 设计稿 v1.0 · 依据《基金股票记账小程序需求文档 V1.1》<br>
+    画布 375×812，单位 pt；实际开发按小程序 rpx 等比换算（1pt ≈ 2rpx）
+  </p>
+</div>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-pos" viewBox="0 0 24 24"><path d="M3 8.5h18v10a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-10z"/><path d="M3 8.5L5.2 4.6A1.5 1.5 0 0 1 6.5 3.9h11a1.5 1.5 0 0 1 1.3.7L21 8.5"/><path d="M16.5 14h2.5"/></symbol>
+  <symbol id="i-rec" viewBox="0 0 24 24"><path d="M8.5 6.5H21M8.5 12H21M8.5 17.5H21"/><path d="M3.5 6.5h.01M3.5 12h.01M3.5 17.5h.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-stat" viewBox="0 0 24 24"><path d="M3.5 19.5V4.5"/><path d="M3.5 19.5H20.5"/><path d="M6.5 15l4-5 3.5 2.6L20 6.5"/></symbol>
+  <symbol id="i-me" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-3.9 3.4-6.2 7.5-6.2s7.5 2.3 7.5 6.2"/></symbol>
+</svg>
+
+</body>
+</html>

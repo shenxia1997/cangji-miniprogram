@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1175px; height:500px; overflow:hidden; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#0E1729; position:relative; }
+  .grid { position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:56px 56px; }
+  .glow { position:absolute; width:620px; height:620px; border-radius:50%; right:-140px; top:-180px;
+    background:radial-gradient(circle, rgba(47,91,234,0.40) 0%, rgba(47,91,234,0) 68%); }
+
+  .wrap { position:absolute; left:72px; top:96px; width:620px; }
+  .eyebrow { font-size:18px; color:#7C8DB5; letter-spacing:4px; margin-bottom:28px; }
+  .eyebrow b { color:#4D7CFF; font-weight:700; }
+  .h1 { font-size:62px; font-weight:800; color:#FFFFFF; line-height:1.34; letter-spacing:-1px; }
+  .h1 em { font-style:normal; color:#4D7CFF; }
+  .rule { width:96px; height:4px; background:#4D7CFF; margin:26px 0 22px; border-radius:2px; }
+  .sub { font-size:24px; color:#C6D0E4; line-height:1.6; letter-spacing:0.5px; }
+
+  /* phone crop */
+  .win { position:absolute; right:66px; top:0; width:376px; height:500px; border-radius:28px 28px 0 0; overflow:hidden;
+         box-shadow:0 0 0 1px rgba(255,255,255,0.10), -18px 0 60px rgba(0,0,0,0.35); }
+  .phone { width:375px; height:812px; background:#F5F7FA; position:relative; }
+  .status { height:44px; display:flex; align-items:center; padding:0 24px; font-size:14px; font-weight:600; color:#101828; }
+  .status .icons { margin-left:auto; display:flex; align-items:center; gap:6px; }
+  .sig { display:flex; align-items:flex-end; gap:2px; height:11px; }
+  .sig i { width:3px; background:#101828; border-radius:1px; display:block; }
+  .sig i:nth-child(1){height:4px}.sig i:nth-child(2){height:6px}.sig i:nth-child(3){height:8px}.sig i:nth-child(4){height:11px}
+  .bat { width:24px; height:12px; border:1.5px solid #101828; border-radius:3px; position:relative; }
+  .bat::after { content:""; position:absolute; left:1.5px; top:1.5px; bottom:1.5px; width:15px; background:#101828; border-radius:1px; }
+  .nav { height:44px; position:relative; display:flex; align-items:center; justify-content:center; }
+  .nav .title { font-size:17px; font-weight:600; color:#101828; }
+  .capsule { position:absolute; right:12px; width:87px; height:32px; border-radius:16px;
+    border:0.5px solid rgba(16,24,40,0.14); background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:space-around; }
+  .capsule .dots { display:flex; gap:3px; }
+  .capsule .dots i { width:4px; height:4px; border-radius:50%; background:#101828; display:block; }
+  .capsule .sep { width:0.5px; height:18px; background:rgba(16,24,40,0.16); }
+  .capsule .ring { width:11px; height:11px; border:1.5px solid #101828; border-radius:50%; position:relative; }
+  .capsule .ring::after { content:""; position:absolute; left:50%; top:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; background:#101828; border-radius:50%; }
+
+  .body { padding:0 16px; }
+  .num { font-feature-settings:"tnum"; font-variant-numeric:tabular-nums; }
+  .hero { background:#2F5BEA; border-radius:20px; padding:22px 22px 20px; color:#FFFFFF; margin-top:12px; }
+  .hero .lbl { font-size:12px; opacity:0.78; letter-spacing:1px; }
+  .hero .val { font-size:34px; font-weight:700; margin-top:6px; }
+  .hero .hrow { display:flex; margin-top:20px; }
+  .hero .hitem { flex:1; }
+  .hero .hk { font-size:11px; opacity:0.72; display:block; }
+  .hero .hv { font-size:16px; font-weight:600; margin-top:4px; display:block; }
+  .hero .hv .pct { font-size:12px; margin-left:6px; opacity:0.9; }
+  .shead { display:flex; align-items:center; margin:20px 4px 12px; }
+  .shead .st { font-size:15px; font-weight:700; color:#101828; }
+  .shead .sm { margin-left:auto; font-size:11px; color:#98A2B3; }
+  .pos { background:#FFFFFF; border-radius:16px; padding:15px 16px; display:flex; align-items:center; margin-bottom:10px; }
+  .pos .l { flex:1; }
+  .pos .nm { font-size:15px; font-weight:600; color:#101828; display:block; }
+  .pos .cd { font-size:11px; color:#98A2B3; margin-top:4px; display:block; }
+  .pos .m { text-align:right; margin-right:22px; }
+  .pos .qty { font-size:13px; color:#344054; display:block; font-weight:600; }
+  .pos .cost { font-size:11px; color:#98A2B3; margin-top:4px; display:block; }
+  .pos .r { text-align:right; min-width:78px; }
+  .pos .pv { font-size:15px; font-weight:700; display:block; }
+  .pos .pp { font-size:11px; margin-top:4px; display:block; }
+  .up { color:#E4453A; } .down { color:#12A45B; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+
+  <div class="wrap">
+    <div class="eyebrow"><b>仓记</b> · AI 协作实录</div>
+    <div class="h1">AI 写完一个小程序<br><em>只用了一小时</em></div>
+    <div class="rule"></div>
+    <div class="sub">但那一个小时里，它只干了四十分钟的活</div>
+  </div>
+
+  <div class="win">
+    <div class="phone">
+      <div class="status"><span class="num">9:41</span>
+        <span class="icons"><span class="sig"><i></i><i></i><i></i><i></i></span><span class="bat"></span></span>
+      </div>
+      <div class="nav"><span class="title">仓记</span>
+        <span class="capsule"><span class="dots"><i></i><i></i><i></i></span><span class="sep"></span><span class="ring"></span></span>
+      </div>
+      <div class="body">
+        <div class="hero">
+          <span class="lbl">总市值（元）</span>
+          <div class="val num">64,000.00</div>
+          <div class="hrow">
+            <div class="hitem"><span class="hk">持仓成本</span><span class="hv num">60,785.00</span></div>
+            <div class="hitem"><span class="hk">浮动盈亏</span><span class="hv num">+3,215.00<span class="pct">+5.29%</span></span></div>
+          </div>
+        </div>
+        <div class="shead"><span class="st">持仓明细</span><span class="sm">2 个标的</span></div>
+        <div class="pos">
+          <div class="l"><span class="nm">沪深300ETF</span><span class="cd">510300 · 场内基金</span></div>
+          <div class="m"><span class="qty num">1,000 股</span><span class="cost">成本 48.545</span></div>
+          <div class="r"><span class="pv up num">+3,455.00</span><span class="pp up num">+7.12%</span></div>
+        </div>
+        <div class="pos">
+          <div class="l"><span class="nm">中证500ETF</span><span class="cd">510500 · 场内基金</span></div>
+          <div class="m"><span class="qty num">2,000 份</span><span class="cost">成本 6.120</span></div>
+          <div class="r"><span class="pv down num">-240.00</span><span class="pp down num">-1.96%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

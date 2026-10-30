@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:960px; overflow:hidden; }
+  body {
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+    background:#F6F8FD; padding:56px 56px 0;
+  }
+  .title { font-size:54px; color:#101828; font-weight:800; letter-spacing:0.5px; line-height:1.28; }
+  .sub { font-size:27px; color:#7A87A3; margin-top:16px; letter-spacing:1px; }
+
+  .list { margin-top:42px; display:flex; flex-direction:column; gap:22px; }
+
+  .card {
+    background:#FFFFFF; border-radius:20px; padding:26px 32px;
+    box-shadow:0 8px 24px rgba(16,24,40,0.07);
+    display:flex; align-items:center; position:relative;
+    border-left:8px solid #DDE4F2;
+  }
+  .card.hot { border-left:8px solid #2F5BEA; box-shadow:0 12px 34px rgba(47,91,234,0.16); }
+
+  .num { flex:0 0 104px; align-self:flex-start; margin-top:10px; font-size:30px; font-weight:800; color:#C3CCDF; letter-spacing:2px; }
+  .card.hot .num { color:#9FB6F5; }
+
+  .body { flex:1; }
+  .name { font-size:42px; font-weight:800; color:#101828; letter-spacing:1px; line-height:1.2; }
+  .card.hot .name { color:#2F5BEA; }
+  .desc { font-size:27px; color:#667085; margin-top:10px; line-height:1.4; }
+  .ans { font-size:25px; color:#98A2B3; margin-top:12px; letter-spacing:0.5px; }
+  .ans b { color:#344054; font-weight:700; }
+
+  .tag {
+    flex:0 0 auto; align-self:flex-start;
+    background:#2F5BEA; color:#FFFFFF; font-size:22px; font-weight:700;
+    padding:8px 20px; border-radius:999px; letter-spacing:1px; margin-left:16px;
+  }
+
+  .foot { position:absolute; left:0; bottom:38px; width:100%; text-align:center; font-size:22px; color:#98A2B3; letter-spacing:2px; }
+</style>
+</head>
+<body>
+  <div class="title">同一笔卖出，三种算法</div>
+  <div class="sub">区别只在「这一笔的成本算多少」</div>
+
+  <div class="list">
+    <div class="card">
+      <div class="num">01</div>
+      <div class="body">
+        <div class="name">摊薄成本</div>
+        <div class="desc">总成本 ÷ 剩余股数</div>
+        <div class="ans">适合回答 · <b>这只票整体划不划算</b></div>
+      </div>
+    </div>
+
+    <div class="card hot">
+      <div class="num">02</div>
+      <div class="body">
+        <div class="name">批次成本</div>
+        <div class="desc">每笔买入独立算，卖出指定消耗哪批</div>
+        <div class="ans">适合回答 · <b>这一笔单独赚了多少</b></div>
+      </div>
+      <div class="tag">做 T 刚需</div>
+    </div>
+
+    <div class="card">
+      <div class="num">03</div>
+      <div class="body">
+        <div class="name">先进先出</div>
+        <div class="desc">不指定，默认卖最早买的那批</div>
+        <div class="ans">适合回答 · <b>做长线、懒得每次指定</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">券商 App 里的「持仓成本价」，基本都是第一种</div>
+</body>
+</html>
